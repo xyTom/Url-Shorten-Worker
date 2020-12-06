@@ -1,4 +1,3 @@
-const externalHostname = "5it.me"
 const html404 = `<!DOCTYPE html>
 <body>
   <h1>404 Not Find.</h1>
@@ -17,15 +16,27 @@ async function randomString(len) {
 　　return result;
 }
 async function checkURL(URL){
-var str=URL;
-var Expression=/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
-var objExp=new RegExp(Expression);
-if(objExp.test(str)==true){
-return true;
-}else{
-return false;
-}
+    let str=URL;
+    let Expression=/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+    let objExp=new RegExp(Expression);
+    if(objExp.test(str)==true){
+      if (str[0] == 'h')
+        return true;
+      else
+        return false;
+    }else{
+        return false;
+    }
 } 
+async function save_url(URL){
+    let random_key=await randomString()
+    let is_exist=await LINKS.get(random_key)
+    console.log(is_exist)
+    if (is_exist == null)
+        return await LINKS.put(random_key, URL),random_key
+    else
+        save_url(URL)
+}
 async function handleRequest(request) {
   console.log(request)
   if (request.method === "POST") {
@@ -33,13 +44,12 @@ async function handleRequest(request) {
     console.log(req["url"])
     if(!await checkURL(req["url"]))
     return new Response(`{"status":500,"key":": Error: Url illegal."}`)
-    let random_key=await randomString()
-    let stat=await LINKS.put(random_key, req["url"])
+    let stat,random_key=await save_url(req["url"])
     console.log(stat)
     if (typeof(stat) == "undefined")
-    return new Response(`{"status":200,"key":"/`+random_key+`"}`)
+      return new Response(`{"status":200,"key":"/`+random_key+`"}`)
     else
-    return new Response(`{"status":200,"key":": Error:Reach the KV write limitation."}`)
+      return new Response(`{"status":200,"key":": Error:Reach the KV write limitation."}`)
   }
 
   const requestURL = new URL(request.url)
