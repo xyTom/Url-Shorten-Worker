@@ -20,9 +20,9 @@ Where Variable name should set as `LINKS` and KV namespace is the namespace you 
 
 <img src="https://cdn.jsdelivr.net/npm/imst@0.0.4/20201205232704.png">
 
-### 复制本项目中的`index.js`的代码到Cloudlare Worker 
+### 复制本项目中的`index.js`的代码到Cloudflare Worker 
 
-Copy the `index.js` code from this project to Cloudlare Worker. 
+Copy the `index.js` code from this project to Cloudflare Worker. 
 
 ### 点击Save and Deploy
 
