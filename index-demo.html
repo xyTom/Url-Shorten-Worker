@@ -5,8 +5,16 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha256-L/W5Wfqfa0sdBNIKN9cG6QA5F2qx4qICmU2VgLruv9Y=" crossorigin="anonymous">
 <title>5hort it|Url shorten</title>
 <style>
-    html, body {
+html, body {
   height: 100%;
+}
+#urlcopy {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  z-index: -10;
+  display: none;
 }
 </style>
 </head>
@@ -56,15 +64,15 @@ align-content: center;">
               No result
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-dismiss="modal" onclick='copyurl()' data-toggle="popover" data-placement="bottom" data-content="Copied!">Copy</button>
+              <button type="button" class="btn btn-primary" onclick='copyurl()' data-toggle="popover" data-placement="bottom" data-content="Copied!">Copy</button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
               
             </div>
           </div>
         </div>
       </div>     
-
-      <script src="https://cdn.jsdelivr.net/npm/url-shorten-worker@latest/main.js" integrity="sha256-a0oYi5izkZaR5ziQsNONZdiW7Jm/rgWl/orX6MlKW4A=" crossorigin="anonymous"></script>
+      <textarea id="urlcopy">For URL copy</textarea>
+      <script src="https://cdn.jsdelivr.net/npm/url-shorten-worker@1.0.2/main.js" integrity="sha256-a0oYi5izkZaR5ziQsNONZdiW7Jm/rgWl/orX6MlKW4A=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha256-WqU1JavFxSAMcLP2WIOI+GB2zWmShMI82mTpLDcqFUg=" crossorigin="anonymous"></script>
