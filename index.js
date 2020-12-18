@@ -19,14 +19,7 @@ async function checkURL(URL){
     let str=URL;
     let Expression=/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
     let objExp=new RegExp(Expression);
-    if(objExp.test(str)==true){
-      if (str[0] == 'h')
-        return true;
-      else
-        return false;
-    }else{
-        return false;
-    }
+    return objExp.test(str) && str[0] === 'h';
 } 
 async function save_url(URL){
     let random_key=await randomString()
