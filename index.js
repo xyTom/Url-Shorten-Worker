@@ -1,7 +1,7 @@
 const html404 = `<!DOCTYPE html>
 <body>
-  <h1>404 Not Find.</h1>
-  <p>The url you visit is not find.</p>
+  <h1>404 Not Found.</h1>
+  <p>The url you visit is not found.</p>
 </body>`
 
 
