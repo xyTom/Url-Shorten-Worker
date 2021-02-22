@@ -19,7 +19,14 @@ async function checkURL(URL){
     let str=URL;
     let Expression=/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
     let objExp=new RegExp(Expression);
-    return objExp.test(str) && str[0] === 'h';
+    if(objExp.test(str)==true){
+      if (str[0] == 'h')
+        return true;
+      else
+        return false;
+    }else{
+        return false;
+    }
 } 
 async function save_url(URL){
     let random_key=await randomString()
@@ -35,14 +42,32 @@ async function handleRequest(request) {
   if (request.method === "POST") {
     let req=await request.json()
     console.log(req["url"])
-    if(!await checkURL(req["url"]))
-    return new Response(`{"status":500,"key":": Error: Url illegal."}`)
+    if(!await checkURL(req["url"])){
+    return new Response(`{"status":500,"key":": Error: Url illegal."}`, {
+      headers: {
+      "content-type": "text/html;charset=UTF-8",
+      "Access-Control-Allow-Origin":"*",
+      "Access-Control-Allow-Methods": "POST",
+      },
+    })}
     let stat,random_key=await save_url(req["url"])
     console.log(stat)
-    if (typeof(stat) == "undefined")
-      return new Response(`{"status":200,"key":"/`+random_key+`"}`)
-    else
-      return new Response(`{"status":200,"key":": Error:Reach the KV write limitation."}`)
+    if (typeof(stat) == "undefined"){
+      return new Response(`{"status":200,"key":"/`+random_key+`"}`, {
+      headers: {
+      "content-type": "text/html;charset=UTF-8",
+      "Access-Control-Allow-Origin":"*",
+      "Access-Control-Allow-Methods": "POST",
+      },
+    })
+    }else{
+      return new Response(`{"status":200,"key":": Error:Reach the KV write limitation."}`, {
+      headers: {
+      "content-type": "text/html;charset=UTF-8",
+      "Access-Control-Allow-Origin":"*",
+      "Access-Control-Allow-Methods": "POST",
+      },
+    })}
   }
 
   const requestURL = new URL(request.url)
@@ -50,7 +75,7 @@ async function handleRequest(request) {
   console.log(path)
   if(!path){
 
-    const html= await fetch("https://xytom.github.io/Url-Shorten-Worker/")
+    const html= await fetch("https://xytom.github.io/Url-Shorten-Worker/index.html")
     
     return new Response(await html.text(), {
     headers: {
