@@ -68,6 +68,15 @@ async function handleRequest(request) {
       "Access-Control-Allow-Methods": "POST",
       },
     })}
+  }else if(request.method === "OPTIONS"){  
+      return new Response(``, {
+      headers: {
+      "content-type": "text/html;charset=UTF-8",
+      "Access-Control-Allow-Origin":"*",
+      "Access-Control-Allow-Methods": "POST",
+      },
+    })
+
   }
 
   const requestURL = new URL(request.url)
