@@ -1,71 +1,71 @@
 <!doctype html>
 <html>
 <head>
-<meta http-equiv="content-type" content="txt/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha256-L/W5Wfqfa0sdBNIKN9cG6QA5F2qx4qICmU2VgLruv9Y=" crossorigin="anonymous">
-<title>Shorter URL</title>
-<style>
-  * {
-    margin: 0;
-    padding: 0;
-    cursor: default;
-  }
-  html, body {
-    height: 100%;
-  }
-  body {
-    display: -webkit-box;
-    display: flex;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    justify-content: center;
-    vertical-align: center;
-    flex-wrap: wrap;
-    align-content: center;
-
-    color: #2a2b2c;
-    background-color: #ebedee;
-    overflow: hidden;
-  }
-  .card {
-    background-color: transparent;
-    width: 768px;
-  }
-  .card-text {
-    text-align: center;
-  }
-  .card-text > a {
-    text-decoration: none;
-    color: #007bff;
-  }
-  .card-text > a {
-    cursor: pointer;
-  }
-  .form-control {
-      cursor: auto;
-  }
-  @media (max-width: 769px) {
-    .card {
-      width: 80%;
+  <meta http-equiv="content-type" content="txt/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha256-L/W5Wfqfa0sdBNIKN9cG6QA5F2qx4qICmU2VgLruv9Y=" crossorigin="anonymous">
+  <title>Shorter URL</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      cursor: default;
     }
-  }
-  @media (max-width: 420px) {
-    .card {
-      width: 95%;
+    html, body {
+      height: 100%;
     }
-  }
-  @media (prefers-color-scheme: dark) { 
     body {
-      color: #d9d9d9; 
-      background: #1b1b1b;
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      justify-content: center;
+      vertical-align: center;
+      flex-wrap: wrap;
+      align-content: center;
+
+      color: #2a2b2c;
+      background-color: #ebedee;
+      overflow: hidden;
     }
     .card {
-      background-color: #252d38;
+      background-color: transparent;
+      width: 768px;
     }
-  } 
-</style>
+    .card-text {
+      text-align: center;
+    }
+    .card-text > a {
+      text-decoration: none;
+      color: #007bff;
+    }
+    .card-text > a {
+      cursor: pointer;
+    }
+    .form-control {
+        cursor: auto;
+    }
+    @media (max-width: 769px) {
+      .card {
+        width: 80%;
+      }
+    }
+    @media (max-width: 420px) {
+      .card {
+        width: 95%;
+      }
+    }
+    @media (prefers-color-scheme: dark) { 
+      body {
+        color: #d9d9d9; 
+        background: #1b1b1b;
+      }
+      .card {
+        background-color: #252d38;
+      }
+    } 
+  </style>
 </head>
 <body>
   <div class="card">
