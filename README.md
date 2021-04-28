@@ -30,3 +30,6 @@ Click Save and Deploy
 
 # Demo
 https://5it.me
+ 
+Note: Because someone abuse this demo webiste, all the generated link will automatically expired after 24 hour. For long-term use, please deploy your own.
+注意：由于该示例服务被人滥用，用于转发诈骗网站，故所有由demo网站生成的链接24小时后会自动失效，如需长期使用请自行搭建。
