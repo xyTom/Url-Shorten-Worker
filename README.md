@@ -29,7 +29,10 @@ Copy the `index.js` code from this project to Cloudflare Worker.
 Click Save and Deploy
 
 # Demo
-https://5it.me
+~~https://5it.me~~
+
+## Demo由于被人滥用，使用短链接引导用户至恶意网站，目前已被域名服务商停止解析，如需使用请自行搭建。
+## Demo has been abused by people using short links to lead users to malicious websites, and has been stopped by the domain name service provider, if you need to use it, please build your own
  
 Note: Because someone abuse this demo website, all the generated link will automatically expired after 24 hours. For long-term use, please deploy your own.
 
