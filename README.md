@@ -1,6 +1,10 @@
 # Url-Shorten-Worker
 A URL Shortener created using Cloudflare Worker
 
+# API
+
+[中文API文档](API.md)
+
 # Getting start
 ### 去Workers KV中创建一个命名空间
 
