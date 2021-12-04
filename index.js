@@ -51,7 +51,7 @@ async function save_url(URL){
     let is_exist=await LINKS.get(random_key)
     console.log(is_exist)
     if (is_exist == null)
-        return await LINKS.put(random_key, URL, {expirationTtl: 86400}),random_key
+        return await LINKS.put(random_key, URL),random_key
     else
         save_url(URL)
 }
