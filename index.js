@@ -2,6 +2,8 @@ const config = {
 no_ref: "off", //Control the HTTP referrer header, if you want to create an anonymous link that will hide the HTTP Referer header, please set to "on" .
 theme:"",//Homepage theme, use the empty value for default theme. To use urlcool theme, please fill with "theme/urlcool" .
 cors: "on",//Allow Cross-origin resource sharing for API requests.
+unique_link:false,//If it is true, the same long url will be shorten into the same short url
+custom_link:false,//Allow users to customize the short url.
 }
 
 const html404 = `<!DOCTYPE html>
@@ -33,6 +35,21 @@ async function randomString(len) {
 　　}
 　　return result;
 }
+
+async function sha512(url){
+    url = new TextEncoder().encode(url)
+
+    const url_digest = await crypto.subtle.digest(
+      {
+        name: "SHA-512",
+      },
+      url, // The data you want to hash as an ArrayBuffer
+    )
+    const hashArray = Array.from(new Uint8Array(url_digest)); // convert buffer to byte array
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    //console.log(hashHex)
+    return hashHex
+}
 async function checkURL(URL){
     let str=URL;
     let Expression=/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
@@ -55,6 +72,15 @@ async function save_url(URL){
     else
         save_url(URL)
 }
+async function is_url_exist(url_sha512){
+  let is_exist = await LINKS.get(url_sha512)
+  console.log(is_exist)
+  if (is_exist == null) {
+    return false
+  }else{
+    return is_exist
+  }
+}
 async function handleRequest(request) {
   console.log(request)
   if (request.method === "POST") {
@@ -64,7 +90,21 @@ async function handleRequest(request) {
     return new Response(`{"status":500,"key":": Error: Url illegal."}`, {
       headers: response_header,
     })}
-    let stat,random_key=await save_url(req["url"])
+    let stat,random_key
+    if (config.unique_link){
+      let url_sha512 = await sha512(req["url"])
+      let url_key = await is_url_exist(url_sha512)
+      if(url_key){
+        random_key = url_key
+      }else{
+        stat,random_key=await save_url(req["url"])
+        if (typeof(stat) == "undefined"){
+          console.log(await LINKS.put(url_sha512,random_key))
+        }
+      }
+    }else{
+      stat,random_key=await save_url(req["url"])
+    }
     console.log(stat)
     if (typeof(stat) == "undefined"){
       return new Response(`{"status":200,"key":"/`+random_key+`"}`, {
