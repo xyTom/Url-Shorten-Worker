@@ -123,6 +123,8 @@ async function handleRequest(request) {
 
   const requestURL = new URL(request.url)
   const path = requestURL.pathname.split("/")[1]
+  const params = requestURL.search;
+
   console.log(path)
   if(!path){
 
@@ -134,11 +136,18 @@ async function handleRequest(request) {
     },
   })
   }
-  const value = await LINKS.get(path)
+
+  const value = await LINKS.get(path);
+  let location ;
+
+  if(params) {
+    location = value + params
+  } else {
+      location = value
+  }
   console.log(value)
   
 
-  const location = value
   if (location) {
     if (config.no_ref=="on"){
       let no_ref= await fetch("https://xytom.github.io/Url-Shorten-Worker/no-ref.html")
