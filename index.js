@@ -127,7 +127,17 @@ async function handleRequest(request) {
 
   console.log(path)
   if(!path){
-
+    return new Response(html404, {
+      headers: {
+        "content-type": "text/html;charset=UTF-8",
+      },
+      status: 404
+    })
+  }
+  
+  /* 查KV中的password对应的值 */
+  const password_value = await LINKS.get("password");
+  if (path==password_value){
     const html= await fetch("https://xytom.github.io/Url-Shorten-Worker/"+config.theme+"/index.html")
     
     return new Response(await html.text(), {
