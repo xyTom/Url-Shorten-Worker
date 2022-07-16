@@ -2,7 +2,7 @@
 
 直接访问域名返回404。在KV中设置一个entry，保存秘密path，只有访问这个path才显示使用页面。
 
-https://zelikk.blogspot.com/2022/07/Url-Shorten-Worker-hide.html
+https://zelikk.blogspot.com/2022/07/url-shorten-worker-hide-tutorial.html
 
 # Url-Shorten-Worker
 A URL Shortener created using Cloudflare Worker
