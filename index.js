@@ -87,10 +87,12 @@ async function handleRequest(request) {
   if (request.method === "POST") {
     let req=await request.json()
     console.log(req["url"])
+/* 不检查url格式
     if(!await checkURL(req["url"])){
     return new Response(`{"status":500,"key":": Error: Url illegal."}`, {
       headers: response_header,
     })}
+*/    
     let stat,random_key
     if (config.unique_link){
       let url_sha512 = await sha512(req["url"])
