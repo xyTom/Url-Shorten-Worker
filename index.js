@@ -10,7 +10,7 @@ const html404 = `<!DOCTYPE html>
 <body>
   <h1>404 Not Found.</h1>
   <p>The url you visit is not found.</p>
-  <p> <a href="https://github.com/xyTom/Url-Shorten-Worker/" target="_self">Fork me on GitHub</a> </p>
+  <p> <a href="https://github.com/crazypeace/Url-Shorten-Worker/" target="_self">Fork me on GitHub</a> </p>
 </body>`
 
 let response_header={
@@ -138,7 +138,7 @@ async function handleRequest(request) {
   /* 查KV中的password对应的值 */
   const password_value = await LINKS.get("password");
   if (path==password_value){
-    const html= await fetch("https://xytom.github.io/Url-Shorten-Worker/"+config.theme+"/index.html")
+    const html= await fetch("https://crazypeace.github.io/Url-Shorten-Worker/"+config.theme+"/index.html")
     
     return new Response(await html.text(), {
     headers: {
@@ -160,7 +160,7 @@ async function handleRequest(request) {
 
   if (location) {
     if (config.no_ref=="on"){
-      let no_ref= await fetch("https://xytom.github.io/Url-Shorten-Worker/no-ref.html")
+      let no_ref= await fetch("https://crazypeace.github.io/Url-Shorten-Worker/no-ref.html")
       no_ref=await no_ref.text()
       no_ref=no_ref.replace(/{Replace}/gm, location)
       return new Response(no_ref, {
