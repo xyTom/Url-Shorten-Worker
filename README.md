@@ -4,6 +4,10 @@
 
 https://zelikk.blogspot.com/2022/07/url-shorten-worker-hide-tutorial.html
 
+支持自定义短链
+
+https://zelikk.blogspot.com/2022/07/url-shorten-worker-custom.html
+
 # Url-Shorten-Worker
 A URL Shortener created using Cloudflare Worker
 
