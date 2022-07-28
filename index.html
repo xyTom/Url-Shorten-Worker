@@ -12,16 +12,21 @@
     <h5 class="card-header">Shorten your URLs!</h5>
     <div class="card-body">
       <h5 class="card-title">Please enter the long URL to be shortened :</h5>
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="Example: https://example.com/" id="text">
-        <button type="button" class="btn btn-primary"  onclick='shorturl()' id="searchbtn">Shorten it</button>
-        <input type="text" class="form-custom-shorturl" placeholder="custom shorturl" id="customShortURL">
+      <div class="input-group mb-3">
+        <input class="form-control" type="text" placeholder="Example: https://example.com/" id="text">
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button" onclick='shorturl()' id="searchbtn">Shorten it</button>
+          <input class="form-control type="text"" placeholder="custom shorturl" id="customShortURL">
+        </div>
       </div>    
       <div class="card-text">
         <a href="https://github.com/crazypeace/Url-Shorten-Worker/" target="_self">Fork me on GitHub</a> 
       </div>
-      <div class="card-password">
-        <input type="text" class="form-password" value="__PASSWORD__" readonly="true" id="passwordText">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon3">password</span>
+        </div>
+        <input class="form-control" type="text" value="__PASSWORD__" readonly="true" id="passwordText" aria-describedby="basic-addon3">
       </div>
       <p id="notice"> </p>
     </div>
