@@ -105,11 +105,8 @@ async function handleRequest(request) {
     }
 
     if (req_password != password_value) {
-      return new Response(html404, {
-        headers: {
-          "content-type": "text/html;charset=UTF-8",
-        },
-        status: 404
+      return new Response(`{"status":500,"key":": Error: Invalid password."}`, {
+        headers: response_header,
       })
     }
 
