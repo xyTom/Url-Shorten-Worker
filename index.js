@@ -190,7 +190,6 @@ async function handleRequest(request) {
   }
   console.log(value)
   
-
   if (location) {
     if (config.no_ref=="on"){
       let no_ref= await fetch("https://crazypeace.github.io/Url-Shorten-Worker/no-ref.html")
@@ -203,8 +202,7 @@ async function handleRequest(request) {
       })
     }else{
       return Response.redirect(location, 302)
-    }
-    
+    }    
   }
   // If request not in kv, return 404
   return new Response(html404, {
@@ -214,8 +212,6 @@ async function handleRequest(request) {
     status: 404
   })
 }
-
-
 
 addEventListener("fetch", async event => {
   event.respondWith(handleRequest(event.request))
