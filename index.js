@@ -7,11 +7,13 @@ const config = {
   }
   
   const html404 = `<!DOCTYPE html>
+  <html>
   <body>
     <h1>404 Not Found.</h1>
     <p>The url you visit is not found.</p>
     <p> <a href="https://github.com/crazypeace/Url-Shorten-Worker/" target="_self">Fork me on GitHub</a> </p>
-  </body>`
+  </body>
+  </html>`
   
   let response_header={
     "content-type": "text/html;charset=UTF-8",
