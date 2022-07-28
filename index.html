@@ -9,18 +9,16 @@
 </head>
 <body>
   <div class="card">
-    <h5 class="card-header">🎁 Shorten your URLs !</h5>
+    <h5 class="card-header">Shorten your URLs!</h5>
     <div class="card-body">
       <h5 class="card-title">Please enter the long URL to be shortened :</h5>
-      <div class="input-group mb-3">
+      <div class="input-group">
         <input type="text" class="form-control" placeholder="Example: https://example.com/" id="text">
-        <div class="input-group-append">
-          <button class="btn btn-primary" type="button" onclick='shorturl()' id="searchbtn">Shorten it</button>
-        </div>
-        <input type="text" class="form-customs-shorturl" placeholder="customs shorturl" id="customShortURL">
+        <button type="button" class="btn btn-primary"  onclick='shorturl()' id="searchbtn">Shorten it</button>
+        <input type="text" class="form-customs-shorturl" placeholder="custom shorturl" id="customShortURL">
       </div>    
       <div class="card-text">
-
+        <a href="https://github.com/crazypeace/Url-Shorten-Worker/" target="_self">Fork me on GitHub</a>      
       </div>
       <p id="notice"></p>             
     </div>
