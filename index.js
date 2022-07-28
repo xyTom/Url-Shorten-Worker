@@ -85,20 +85,35 @@ async function is_url_exist(url_sha512){
 }
 async function handleRequest(request) {
   console.log(request)
+
+  // 查KV中的password对应的值
+  const password_value = await LINKS.get("password");
+
   if (request.method === "POST") {
     let req=await request.json()
     let req_url=req["url"]
     let req_customShortURL=req["customShortURL"]
+    let req_password=req["password"]
+
     console.log(req_url)
     console.log(req_customShortURL)
+    console.log(req_password)
     if(!await checkURL(req_url)){
       return new Response(`{"status":500,"key":": Error: Url illegal."}`, {
         headers: response_header,
       })
     }
 
-    let stat,random_key
+    if (req_password != password_value) {
+      return new Response(html404, {
+        headers: {
+          "content-type": "text/html;charset=UTF-8",
+        },
+        status: 404
+      })
+    }
 
+    let stat,random_key
     if (config.custom_link && (req_customShortURL != "")){
       let is_exist=await LINKS.get(req_customShortURL)
       if (is_exist != null) {
@@ -153,8 +168,7 @@ async function handleRequest(request) {
     })
   }
   
-  /* 查KV中的password对应的值 */
-  const password_value = await LINKS.get("password");
+  // 如果path符合password 显示应用界面
   if (path==password_value){  
     let index= await fetch("https://crazypeace.github.io/Url-Shorten-Worker/"+config.theme+"/index.html")
     index=await index.text()
