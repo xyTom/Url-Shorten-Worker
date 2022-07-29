@@ -1,5 +1,4 @@
-修改说明：
-
+# 修改说明：
 直接访问域名返回404。在KV中设置一个entry，保存秘密path，只有访问这个path才显示使用页面。
 
 https://zelikk.blogspot.com/2022/07/url-shorten-worker-hide-tutorial.html
@@ -12,8 +11,7 @@ API 不公开服务
 
 https://zelikk.blogspot.com/2022/07/url-shorten-worker-api-password.html
 
-完整的部署教程
-
+# 完整的部署教程
 https://zelikk.blogspot.com/2022/07/url-shorten-worker-hide-tutorial.html
 
 
