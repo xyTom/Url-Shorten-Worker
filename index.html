@@ -12,21 +12,29 @@
     <h5 class="card-header">Shorten your URLs!</h5>
     <div class="card-body">
       <h5 class="card-title">Please enter the long URL to be shortened :</h5>
-      <div class="input-group input-group-multiple">
-        <input class="form-control" type="text" placeholder="Example: https://example.com/" id="text"> 
-        <div class="input-group-append"> 
-          <button class="btn btn-primary" type="button" onclick='shorturl()' id="searchbtn">Shorten it</button>
-          <input class="form-control" type="text" placeholder="custom shorturl" id="customShortURL">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">Long URL</span>
         </div>
-      </div>    
-      <div class="card-text">
-        <a href="https://github.com/crazypeace/Url-Shorten-Worker/" target="_self">Fork me on GitHub</a> 
+        <input type="text" class="form-control" id="text" aria-describedby="basic-addon1" placeholder="Example: https://example.com/">
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon2">Custom Short URL</span>
+        </div>
+        <input type="text" class="form-control" id="text" aria-describedby="basic-addon2" placeholder="As you wish">
+      </div>     
+      <div class="input-group mb-3">
+        <button class="btn btn-primary" type="button" onclick='shorturl()' id="searchbtn">Shorten it</button>
       </div>
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="basic-addon3">password</span>
         </div>
         <input class="form-control" type="text" value="__PASSWORD__" readonly="true" id="passwordText" aria-describedby="basic-addon3">
+      </div>
+      <div class="card-text">
+        <a href="https://github.com/crazypeace/Url-Shorten-Worker/" target="_self">Fork me on GitHub</a> 
       </div>
       <p id="notice"> </p>
     </div>
