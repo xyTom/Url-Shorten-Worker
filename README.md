@@ -12,6 +12,11 @@ API 不公开服务
 
 https://zelikk.blogspot.com/2022/07/url-shorten-worker-api-password.html
 
+完整的部署教程
+
+https://zelikk.blogspot.com/2022/07/url-shorten-worker-hide-tutorial.html
+
+
 # Url-Shorten-Worker
 A URL Shortener created using Cloudflare Worker
 
