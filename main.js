@@ -1,6 +1,6 @@
 let res
   function shorturl() {
-    if(document.querySelector("#text").value==""){
+    if(document.querySelector("#longURL").value==""){
         alert("Url cannot be empty!")
         return
     }
@@ -64,8 +64,4 @@ let res
   $(function () {
     $('[data-toggle="popover"]').popover()
   })
-  console.log("https://github.com/xyTom/Url-Shorten-Worker/")
-  let notice="Notice: This service is for demonstration purposes only and the generated short links will automatically expire after 24 hours."
-  if(window.location.host=="5it.me"){
-    document.getElementById("notice").innerHTML=notice
-  }
+
