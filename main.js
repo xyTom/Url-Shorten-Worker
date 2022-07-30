@@ -27,11 +27,12 @@ function shorturl() {
       keyShortURL=window.location.host + res.key;
       valueLongURL=document.querySelector("#longURL").value;
       // save to localStrorage
-      localStorage.setItem(keyShortURL, valueLongURL);
+      //localStorage.setItem(keyShortURL, valueLongURL);
       // add to urlList
       urlList = document.querySelector("#urlList")
       var child = document.createEtement('li')
-      var text = document.createTextNode(keyShortURL + " " + valueLongURL)
+      //var text = document.createTextNode(keyShortURL + " " + valueLongURL)
+      var text = document.createTextNode("keyShortURL valueLongURL")
       child.appendChild(text)
       urlPair.append(child)
     }
