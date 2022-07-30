@@ -141,7 +141,7 @@ async function handleRequest(request) {
         headers: response_header,
       })
     }else{
-      return new Response(`{"status":200,"key":": Error:Reach the KV write limitation."}`, {
+      return new Response(`{"status":500,"key":": Error:Reach the KV write limitation."}`, {
         headers: response_header,
       })
     }
