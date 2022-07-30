@@ -22,7 +22,7 @@ function shorturl() {
       document.getElementById("result").innerHTML = window.location.host + res.key;
     }
     $('#exampleModal').modal('show')
-
+/*
     if (res.status == "200") {
       keyShortURL=window.location.host + res.key;
       valueLongURL=document.querySelector("#longURL").value;
@@ -36,6 +36,7 @@ function shorturl() {
       child.appendChild(text)
       urlPair.append(child)
     }
+*/    
   }).catch(function (err) {
     alert("Unknow error. Please retry!");
     console.log(err);
