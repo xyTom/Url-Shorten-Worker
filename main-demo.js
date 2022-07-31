@@ -22,21 +22,20 @@ function shorturl() {
       document.getElementById("result").innerHTML = window.location.host + res.key;
     }
     $('#exampleModal').modal('show')
-/*
+
     if (res.status == "200") {
       keyShortURL=window.location.host + res.key;
       valueLongURL=document.querySelector("#longURL").value;
       // save to localStrorage
-      //localStorage.setItem(keyShortURL, valueLongURL);
+      localStorage.setItem(keyShortURL, valueLongURL);
       // add to urlList
       urlList = document.querySelector("#urlList")
       var child = document.createEtement('li')
-      //var text = document.createTextNode(keyShortURL + " " + valueLongURL)
-      var text = document.createTextNode("keyShortURL valueLongURL")
+      var text = document.createTextNode(keyShortURL + " " + valueLongURL)
       child.appendChild(text)
-      urlPair.append(child)
+      urlList.append(child)
     }
-*/    
+   
   }).catch(function (err) {
     alert("Unknow error. Please retry!");
     console.log(err);
