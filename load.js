@@ -1,5 +1,6 @@
 function loadUrlList() {
-    console.log("loadUrlList")
+    alert("Load url list from localStorage!")
+    
     urlList = document.querySelector("#urlList")
     var child = document.createEtement('li')
     var text = document.createTextNode("loadUrlList")

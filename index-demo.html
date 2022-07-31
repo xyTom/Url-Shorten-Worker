@@ -25,7 +25,7 @@
         <input type="text" class="form-control" id="customShortURL" aria-describedby="basic-addon2" placeholder="As you wish">
       </div>     
       <div class="input-group mb-3">
-        <button class="btn btn-primary" type="button" onclick='loadUrlList()' id="searchbtn">Shorten it</button>
+        <button class="btn btn-primary" type="button" onclick='shorturl()' id="searchbtn">Shorten it</button>
       </div>
       <div class="input-group mb-3">
         <div class="input-group-prepend">
@@ -36,10 +36,14 @@
       <div class="card-text">
         <a href="https://github.com/crazypeace/Url-Shorten-Worker/" target="_self">Fork me on GitHub</a> 
       </div>
-
-      <ol id="urlList"> 
-        <li> test https://test.com
-      </ol>      
+      <div class="input-group mb-3">
+        <button class="btn btn-primary" type="button" onclick='loadUrlList()' id="searchbtn">Shorten it</button>
+      </div>
+      <div class="input-group mb-3">
+        <ol id="urlList"> 
+          <li> test https://test.com
+        </ol>      
+      </div>
 
     </div>
   </div>
