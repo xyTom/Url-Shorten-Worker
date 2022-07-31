@@ -18,3 +18,7 @@ function loadUrlList() {
         urlList.append(child)
     }
 }
+
+function clearLocalStorage() {
+    localStorage.clear()
+}
