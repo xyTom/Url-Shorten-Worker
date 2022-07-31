@@ -24,14 +24,14 @@ function shorturl() {
     $('#exampleModal').modal('show')
 
     if (res.status == "200") {
-      keyShortURL=window.location.host + res.key;
-      valueLongURL=document.querySelector("#longURL").value;
+      let keyShortURL=window.location.host + res.key;
+      let valueLongURL=document.querySelector("#longURL").value;
       // save to localStrorage
       localStorage.setItem(keyShortURL, valueLongURL);
       // add to urlList
       urlList = document.querySelector("#urlList")
-      var child = document.createEtement('li')
-      var text = document.createTextNode(keyShortURL + " " + valueLongURL)
+      let child = document.createEtement('li')
+      let text = document.createTextNode(keyShortURL + " " + valueLongURL)
       child.appendChild(text)
       urlList.append(child)
     }
