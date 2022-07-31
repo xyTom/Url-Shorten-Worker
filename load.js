@@ -1,4 +1,5 @@
 function loadUrlList() {
+    console.log("loadUrlList")
     var len = localStorage.len
     console.log(len)
     for (; len >= 0; len--) {
