@@ -6,7 +6,7 @@ function loadUrlList() {
     var text = document.createTextNode("loadUrlList")
     child.appendChild(text)
     urlPair.append(child)
-
+/*
     var len = localStorage.len
     console.log(len)
     for (; len >= 0; len--) {
@@ -19,4 +19,5 @@ function loadUrlList() {
         child.appendChild(text)
         urlPair.append(child)
     }
+*/
 }
