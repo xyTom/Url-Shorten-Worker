@@ -14,34 +14,35 @@ function shorturl() {
   }).then(function (response) {
     return response.json();
   })
-  .then(function (myJson) {
-    res = myJson;
-    document.getElementById("searchbtn").disabled = false;
-    document.getElementById("searchbtn").innerHTML = ' Shorten it';
-    if (res.key !== "") {
-      document.getElementById("result").innerHTML = window.location.host + res.key;
-    }
-    $('#exampleModal').modal('show')
+    .then(function (myJson) {
+      res = myJson;
+      document.getElementById("searchbtn").disabled = false;
+      document.getElementById("searchbtn").innerHTML = ' Shorten it';
+      if (res.key !== "") {
+        document.getElementById("result").innerHTML = window.location.host + res.key;
+      }
+      $('#exampleModal').modal('show')
 
-    if (res.status == "200") {
-      let keyShortURL=window.location.host + res.key;
-      let valueLongURL=document.querySelector("#longURL").value;
-      // save to localStrorage
-      localStorage.setItem(keyShortURL, valueLongURL);
-      // add to urlList
-      urlList = document.querySelector("#urlList")
-      let child = document.createElement('li')
-      let text = document.createTextNode(keyShortURL + " " + valueLongURL)
-      child.appendChild(text)
-      urlList.append(child)
-    }
-   
-  }).catch(function (err) {
-    alert("Unknow error. Please retry!");
-    console.log(err);
-    document.getElementById("searchbtn").disabled = false;
-    document.getElementById("searchbtn").innerHTML = ' Shorten it';
-  })
+      // 成功生成短链
+      if (res.status == "200") {
+        let keyShortURL = window.location.host + res.key;
+        let valueLongURL = document.querySelector("#longURL").value;
+        // save to localStrorage
+        localStorage.setItem(keyShortURL, valueLongURL);
+        // add to urlList on the page
+        let urlList = document.querySelector("#urlList")
+        let child = document.createElement('li')
+        let text = document.createTextNode(keyShortURL + " " + valueLongURL)
+        child.appendChild(text)
+        urlList.append(child)
+      }
+
+    }).catch(function (err) {
+      alert("Unknow error. Please retry!");
+      console.log(err);
+      document.getElementById("searchbtn").disabled = false;
+      document.getElementById("searchbtn").innerHTML = ' Shorten it';
+    })
 }
 function copyurl(id, attr) {
   let target = null;
