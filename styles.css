@@ -19,24 +19,16 @@
 
       color: #2a2b2c;
       background-color: #ebedee;
-      overflow: hidden;
     }
     .card {
       background-color: transparent;
       width: 768px;
     }
-    .card-text {
-      text-align: center;
-    }
-    .card-text > a {
-      text-decoration: none;
-      color: #007bff;
-    }
-    .card-text > a {
-      cursor: pointer;
-    }
     .form-control {
         cursor: auto;
+    }
+    .btn {
+      margin: 0 .375rem 0 0;
     }
     @media (max-width: 769px) {
       .card {
