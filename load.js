@@ -7,7 +7,7 @@ function loadUrlList() {
     child.appendChild(text)
     urlList.append(child)
 */
-    let len = localStorage.len
+    let len = localStorage.length
     console.log(+len)
     for (; len >= 0; len--) {
         let keyShortURL=localStorage.key(len)
