@@ -1,4 +1,3 @@
-$(function () {
     var len = localStorage.len
     console.log(len)
     for (; len >= 0; len--) {
@@ -11,4 +10,3 @@ $(function () {
         child.appendChild(text)
         urlPair.append(child)
     }
-})
