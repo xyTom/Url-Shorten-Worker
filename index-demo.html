@@ -12,37 +12,44 @@
     <h5 class="card-header">Shorten your URLs!</h5>
     <div class="card-body">
       <h5 class="card-title"> </h5>
+
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="basic-addon1">Long URL</span>
         </div>
         <input type="text" class="form-control" id="longURL" aria-describedby="basic-addon1" placeholder="Example: https://example.com/">
       </div>
+
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="basic-addon2">Custom Short URL</span>
         </div>
         <input type="text" class="form-control" id="customShortURL" aria-describedby="basic-addon2" placeholder="As you wish">
       </div>     
+
       <div class="input-group mb-3">
         <button class="btn btn-primary" type="button" onclick='shorturl()' id="searchbtn">Shorten it</button>
       </div>
+
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="basic-addon3">password</span>
         </div>
         <input class="form-control" type="text" value="__PASSWORD__" readonly="true" id="passwordText" aria-describedby="basic-addon3">
       </div>
-      <div class="card-text">
-        <a href="https://github.com/crazypeace/Url-Shorten-Worker/" target="_self">Fork me on GitHub</a> 
-      </div>
+
       <div class="input-group mb-3">
         <button class="btn btn-info" type="button" onclick='loadUrlList()' id="loadListBtn">loadUrlList from localStorage</button>
         <button class="btn btn-danger" type="button" onclick='clearLocalStorage()' id="clearlocalStgBtn">clear localStorage</button>
       </div>
-      <div class="input-group mb-3">
+
+      <div class="card-text">
         <ol id="urlList"> 
         </ol>      
+      </div>      
+      
+      <div class="card-footer">
+        <span> <a href="https://github.com/crazypeace/Url-Shorten-Worker/" target="_self">Fork me on GitHub</a> </span>
       </div>
     </div>
   </div>
