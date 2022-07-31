@@ -1,8 +1,9 @@
 $(function () {
-    var len = localStorage.len;
+    var len = localStorage.len
+    console.log(len)
     for (; len >= 0; len--) {
-        keyShortURL=localStorage.key(len);
-        valueLongURL=localStorage.getItem(keyShortURL);
+        keyShortURL=localStorage.key(len)
+        valueLongURL=localStorage.getItem(keyShortURL)
 
         urlList = document.querySelector("#urlList")
         var child = document.createEtement('li')
