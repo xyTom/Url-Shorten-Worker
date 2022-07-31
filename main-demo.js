@@ -30,7 +30,7 @@ function shorturl() {
       localStorage.setItem(keyShortURL, valueLongURL);
       // add to urlList
       urlList = document.querySelector("#urlList")
-      let child = document.createEtement('li')
+      let child = document.createElement('li')
       let text = document.createTextNode(keyShortURL + " " + valueLongURL)
       child.appendChild(text)
       urlList.append(child)
