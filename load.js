@@ -1,3 +1,4 @@
+function loadUrlList() {
     var len = localStorage.len
     console.log(len)
     for (; len >= 0; len--) {
@@ -10,3 +11,4 @@
         child.appendChild(text)
         urlPair.append(child)
     }
+}
