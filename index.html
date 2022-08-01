@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="content-type" content="txt/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha256-L/W5Wfqfa0sdBNIKN9cG6QA5F2qx4qICmU2VgLruv9Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
   <title>Shorter URL</title>
   <link rel="stylesheet" href="https://crazypeace.github.io/Url-Shorten-Worker/styles.css">
 </head>
@@ -12,34 +12,48 @@
     <h5 class="card-header">Shorten your URLs!</h5>
     <div class="card-body">
       <h5 class="card-title"> </h5>
+
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="basic-addon1">Long URL</span>
         </div>
         <input type="text" class="form-control" id="longURL" aria-describedby="basic-addon1" placeholder="Example: https://example.com/">
       </div>
+
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="basic-addon2">Custom Short URL</span>
         </div>
         <input type="text" class="form-control" id="customShortURL" aria-describedby="basic-addon2" placeholder="As you wish">
       </div>     
+
       <div class="input-group mb-3">
         <button class="btn btn-primary" type="button" onclick='shorturl()' id="searchbtn">Shorten it</button>
       </div>
+
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="basic-addon3">password</span>
         </div>
         <input class="form-control" type="text" value="__PASSWORD__" readonly="true" id="passwordText" aria-describedby="basic-addon3">
       </div>
-      <div class="card-text">
-        <a href="https://github.com/crazypeace/Url-Shorten-Worker/" target="_self">Fork me on GitHub</a> 
+
+      <div class="input-group mb-3">
+        <button class="btn btn-info" type="button" onclick='loadUrlList()' id="loadListBtn">load localStorage</button>
+        <button class="btn btn-danger" type="button" onclick='clearLocalStorage()' id="clearlocalStgBtn">clear localStorage</button>
       </div>
-      <ol id="urlList"> 
-      </ol>   
+
+      <div class="card-text">
+        <ol id="urlList"> 
+        </ol>      
+      </div>      
+      
+      <div class="card-footer">
+        <span> <a href="https://github.com/crazypeace/Url-Shorten-Worker/" target="_self">Fork me on GitHub</a> </span>
+      </div>
     </div>
   </div>
+
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -57,12 +71,14 @@
       </div>
     </div>
   </div>         
-  <script src="https://gcore.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
-  <script src="https://gcore.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-  <script src="https://gcore.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha256-WqU1JavFxSAMcLP2WIOI+GB2zWmShMI82mTpLDcqFUg=" crossorigin="anonymous"></script>
+  
+  <script src="https://gcore.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://gcore.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+
   <script src="https://crazypeace.github.io/Url-Shorten-Worker/main.js" crossorigin="anonymous"></script>
   <!--
     <script src="https://gcore.jsdelivr.net/gh/crazypeace/Url-Shorten-Worker@gh-pages/main.js" crossorigin="anonymous"></script>
   -->
+  <script src="https://crazypeace.github.io/Url-Shorten-Worker/load.js" crossorigin="anonymous"></script>
 </body>
 </html>
