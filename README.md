@@ -11,6 +11,10 @@ API 不公开服务
 
 https://zelikk.blogspot.com/2022/07/url-shorten-worker-api-password.html
 
+页面缓存设置过的短链
+
+https://zelikk.blogspot.com/2022/08/url-shorten-worker-localstorage.html
+
 # 完整的部署教程
 https://zelikk.blogspot.com/2022/07/url-shorten-worker-hide-tutorial.html
 
