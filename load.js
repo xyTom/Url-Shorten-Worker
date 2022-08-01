@@ -22,3 +22,5 @@ function loadUrlList() {
 function clearLocalStorage() {
     localStorage.clear()
 }
+
+loadUrlList()
