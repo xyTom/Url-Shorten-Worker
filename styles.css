@@ -3,9 +3,6 @@
       padding: 0;
       cursor: default;
     }
-    html, body {
-      height: 100%;
-    }
     body {
       display: -webkit-box;
       display: flex;
