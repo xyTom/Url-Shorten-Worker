@@ -27,7 +27,7 @@ function shorturl() {
       if (res.status == "200") {
         let keyShortURL = window.location.host + res.key;
         let valueLongURL = document.querySelector("#longURL").value;
-        // save to localStrorage
+        // save to localStorage
         localStorage.setItem(keyShortURL, valueLongURL);
         // add to urlList on the page
         let urlList = document.querySelector("#urlList")
