@@ -109,6 +109,7 @@ function filterUrlList() {
     let urlList = document.querySelector("#urlList").children
     for (let i = 0; i < urlList.length; i++) {
       urlList[i].classList.remove("invisible")
+      urlList[i].classList.add("visible")
     }
   } else {
     // 如果长链接文本框为空，显示包含有链接的li元素，隐藏其它
@@ -116,10 +117,11 @@ function filterUrlList() {
     for (let i = 0; i < urlList.length; i++) {
       if (urlList[i].contains(longUrl)) {
         urlList[i].classList.remove("invisible")
+        urlList[i].classList.add("visible")
       }
       else {
-        urlList[i].classList.add("invisible")
         urlList[i].classList.remove("visible")
+        urlList[i].classList.add("invisible")
       }
     }
   }
