@@ -32,9 +32,9 @@ function shorturl() {
         // add to urlList on the page
         let urlList = document.querySelector("#urlList")
         let child = document.createElement('li')
-        child.classList.add("list-group-item")
         let text = document.createTextNode(keyShortURL + " " + valueLongURL)
         child.appendChild(text)
+        child.classList.add("list-group-item")
         urlList.append(child)
       }
 
