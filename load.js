@@ -11,17 +11,21 @@ function loadUrlList() {
     for (; len > 0; len--) {
         let keyShortURL = localStorage.key(len - 1)
         let valueLongURL = localStorage.getItem(keyShortURL)
-
-        let child = document.createElement('li')
-        let text = document.createTextNode(keyShortURL + " " + valueLongURL)
-        child.appendChild(text)
-        child.classList.add("list-group-item")
-        urlList.append(child)
+        addUrlToList(keyShortURL, valueLongURL)
     }
 }
 
 function clearLocalStorage() {
     localStorage.clear()
+}
+
+function addUrlToList(shortUrl, longUrl) {
+    let urlList = document.querySelector("#urlList")
+    let child = document.createElement('li')
+    let text = document.createTextNode(shortUrl + " " + longUrl)
+    child.appendChild(text)
+    child.classList.add("list-group-item")
+    urlList.append(child)
 }
 
 loadUrlList()
