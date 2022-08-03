@@ -17,7 +17,7 @@
         <div class="input-group-prepend">
           <span class="input-group-text" id="basic-addon1">Long URL</span>
         </div>
-        <input type="text" class="form-control" id="longURL" aria-describedby="basic-addon1" placeholder="Example: https://example.com/" oninput="filterUrlList()">
+        <input type="text" class="form-control" id="longURL" aria-describedby="basic-addon1" placeholder="Example: https://example.com/">
       </div>
 
       <div class="input-group mb-3">
@@ -41,6 +41,7 @@
       <div class="input-group mb-3">
         <button class="btn btn-info" type="button" onclick='loadUrlList()' id="loadListBtn">load localStorage</button>
         <button class="btn btn-danger" type="button" onclick='clearLocalStorage()' id="clearlocalStgBtn">clear localStorage</button>
+        <button class="btn " type="button" onclick='filterUrlList()' id="filterListBtn">filterUrlList</button>
       </div>
 
       <div class="card-text">
