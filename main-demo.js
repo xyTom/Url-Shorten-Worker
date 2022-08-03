@@ -30,12 +30,7 @@ function shorturl() {
         // save to localStorage
         localStorage.setItem(keyShortURL, valueLongURL);
         // add to urlList on the page
-        let urlList = document.querySelector("#urlList")
-        let child = document.createElement('li')
-        let text = document.createTextNode(keyShortURL + " " + valueLongURL)
-        child.appendChild(text)
-        child.classList.add("list-group-item")
-        urlList.append(child)
+        addUrlToList(keyShortURL, valueLongURL)
       }
 
     }).catch(function (err) {
@@ -80,6 +75,62 @@ function copyurl(id, attr) {
     target.parentElement.removeChild(target);
   }
 }
+function loadUrlList() {
+  // 清空列表
+  let urlList = document.querySelector("#urlList")
+  while (urlList.firstChild) {
+      urlList.removeChild(urlList.firstChild)
+  }
+
+  // 遍历localStorage
+  let len = localStorage.length
+  console.log(+len)
+  for (; len > 0; len--) {
+      let keyShortURL = localStorage.key(len - 1)
+      let valueLongURL = localStorage.getItem(keyShortURL)
+      addUrlToList(keyShortURL, valueLongURL)
+  }
+}
+
+function addUrlToList(shortUrl, longUrl) {
+  let urlList = document.querySelector("#urlList")
+  let child = document.createElement('li')
+  let text = document.createTextNode(shortUrl + " " + longUrl)
+  child.appendChild(text)
+  child.classList.add("list-group-item")
+  urlList.append(child)
+}
+
+function filterUrlList() {
+  let longUrl = document.querySelector("#longURL")
+
+  // 如果长链接文本框为空，显示全部urlList
+  if (longUrl =="") {
+    let urlList = document.querySelector("#urlList").children
+    for (let i = 0; i < urlList.length; i++) {
+      urlList[i].classList.remove("invisible")
+    }
+  } else {
+    // 如果长链接文本框为空，显示包含有链接的li元素，隐藏其它
+    let urlList = document.querySelector("#urlList").children
+    for (let i = 0; i < urlList.length; i++) {
+      if (urlList[i].contains(longUrl)) {
+        urlList[i].classList.remove("invisible")
+      }
+      else {
+        urlList[i].classList.add("invisible")
+        urlList[i].classList.remove("visible")
+      }
+    }
+  }
+}
+
+function clearLocalStorage() {
+  localStorage.clear()
+}
+
 $(function () {
   $('[data-toggle="popover"]').popover()
 })
+
+loadUrlList()
