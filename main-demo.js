@@ -82,12 +82,17 @@ function loadUrlList() {
       urlList.removeChild(urlList.firstChild)
   }
 
+  // 文本框中的长链接
+  let longUrl = document.querySelector("#longURL")
+
   // 遍历localStorage
   let len = localStorage.length
   console.log(+len)
   for (; len > 0; len--) {
       let keyShortURL = localStorage.key(len - 1)
       let valueLongURL = localStorage.getItem(keyShortURL)
+
+      if (longUrl == "" || (longUrl == valueLongURL))
       addUrlToList(keyShortURL, valueLongURL)
   }
 }
@@ -99,32 +104,6 @@ function addUrlToList(shortUrl, longUrl) {
   child.appendChild(text)
   child.classList.add("list-group-item")
   urlList.append(child)
-}
-
-function filterUrlList() {
-  let longUrl = document.querySelector("#longURL")
-
-  // 如果长链接文本框为空，显示全部urlList
-  if (longUrl =="") {
-    let urlList = document.querySelector("#urlList").children
-    for (let i = 0; i < urlList.length; i++) {
-      urlList[i].classList.remove("invisible")
-      urlList[i].classList.add("visible")
-    }
-  } else {
-    // 如果长链接文本框为空，显示包含有链接的li元素，隐藏其它
-    let urlList = document.querySelector("#urlList").children
-    for (let i = 0; i < urlList.length; i++) {
-      if (urlList[i].contains(longUrl)) {
-        urlList[i].classList.remove("invisible")
-        urlList[i].classList.add("visible")
-      }
-      else {
-        urlList[i].classList.remove("visible")
-        urlList[i].classList.add("invisible")
-      }
-    }
-  }
 }
 
 function clearLocalStorage() {
