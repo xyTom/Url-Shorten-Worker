@@ -83,7 +83,7 @@ function loadUrlList() {
   }
 
   // 文本框中的长链接
-  let longUrl = document.querySelector("#longURL")
+  let longUrl = document.querySelector("#longURL").text
   console.log(longUrl)
 
   // 遍历localStorage
