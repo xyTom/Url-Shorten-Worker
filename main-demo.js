@@ -79,7 +79,7 @@ function loadUrlList() {
   // 清空列表
   let urlList = document.querySelector("#urlList")
   while (urlList.firstChild) {
-      urlList.removeChild(urlList.firstChild)
+    urlList.removeChild(urlList.firstChild)
   }
 
   // 文本框中的长链接
@@ -90,14 +90,14 @@ function loadUrlList() {
   let len = localStorage.length
   console.log(+len)
   for (; len > 0; len--) {
-      let keyShortURL = localStorage.key(len - 1)
-      let valueLongURL = localStorage.getItem(keyShortURL)
+    let keyShortURL = localStorage.key(len - 1)
+    let valueLongURL = localStorage.getItem(keyShortURL)
 
-      // 如果长链接为空，加载所有的localStorage
-      // 如果长链接不为空，加载匹配的localStorage
-      if (longUrl == "" || (longUrl == valueLongURL)) {
-        addUrlToList(keyShortURL, valueLongURL)
-      }
+    // 如果长链接为空，加载所有的localStorage
+    // 如果长链接不为空，加载匹配的localStorage
+    if (longUrl == "" || (longUrl == valueLongURL)) {
+      addUrlToList(keyShortURL, valueLongURL)
+    }
   }
 }
 
