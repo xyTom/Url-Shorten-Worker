@@ -34,7 +34,8 @@ function shorturl() {
         let child = document.createElement('li')
         let text = document.createTextNode(keyShortURL + " " + valueLongURL)
         child.appendChild(text)
-        child.classList.add("list-group-item")
+        child.setAttribute("class", "list-group-item")
+        // child.classList.add("list-group-item")
         urlList.append(child)
       }
 
