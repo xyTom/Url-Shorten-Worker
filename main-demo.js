@@ -92,8 +92,9 @@ function loadUrlList() {
       let keyShortURL = localStorage.key(len - 1)
       let valueLongURL = localStorage.getItem(keyShortURL)
 
-      if (longUrl == "" || (longUrl == valueLongURL))
-      addUrlToList(keyShortURL, valueLongURL)
+      if (longUrl == "" || (longUrl == valueLongURL)) {
+        addUrlToList(keyShortURL, valueLongURL)
+      }
   }
 }
 
