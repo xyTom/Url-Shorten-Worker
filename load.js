@@ -15,6 +15,7 @@ function loadUrlList() {
         let child = document.createElement('li')
         let text = document.createTextNode(keyShortURL + " " + valueLongURL)
         child.appendChild(text)
+        child.classList.add("list-group-item")
         urlList.append(child)
     }
 }
