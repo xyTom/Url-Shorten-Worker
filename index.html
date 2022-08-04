@@ -17,7 +17,7 @@
         <div class="input-group-prepend">
           <span class="input-group-text" id="basic-addon1">Long URL</span>
         </div>
-        <input type="text" class="form-control" id="longURL" aria-describedby="basic-addon1" placeholder="Example: https://example.com/">
+        <input type="text" class="form-control" id="longURL" aria-describedby="basic-addon1" placeholder="Example: https://example.com/" oninput="loadUrlList()">
       </div>
 
       <div class="input-group mb-3">
@@ -44,8 +44,8 @@
       </div>
 
       <div class="card-text">
-        <ol id="urlList"> 
-        </ol>      
+        <ul classs="list-group" id="urlList"> 
+        </ul>      
       </div>      
       
       <div class="card-footer">
@@ -79,6 +79,5 @@
   <!--
     <script src="https://gcore.jsdelivr.net/gh/crazypeace/Url-Shorten-Worker@gh-pages/main.js" crossorigin="anonymous"></script>
   -->
-  <script src="https://crazypeace.github.io/Url-Shorten-Worker/load.js" crossorigin="anonymous"></script>
 </body>
 </html>

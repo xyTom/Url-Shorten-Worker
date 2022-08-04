@@ -30,11 +30,7 @@ function shorturl() {
         // save to localStorage
         localStorage.setItem(keyShortURL, valueLongURL);
         // add to urlList on the page
-        let urlList = document.querySelector("#urlList")
-        let child = document.createElement('li')
-        let text = document.createTextNode(keyShortURL + " " + valueLongURL)
-        child.appendChild(text)
-        urlList.append(child)
+        addUrlToList(keyShortURL, valueLongURL)
       }
 
     }).catch(function (err) {
@@ -79,6 +75,47 @@ function copyurl(id, attr) {
     target.parentElement.removeChild(target);
   }
 }
+function loadUrlList() {
+  // 清空列表
+  let urlList = document.querySelector("#urlList")
+  while (urlList.firstChild) {
+    urlList.removeChild(urlList.firstChild)
+  }
+
+  // 文本框中的长链接
+  let longUrl = document.querySelector("#longURL").value
+  console.log(longUrl)
+
+  // 遍历localStorage
+  let len = localStorage.length
+  console.log(+len)
+  for (; len > 0; len--) {
+    let keyShortURL = localStorage.key(len - 1)
+    let valueLongURL = localStorage.getItem(keyShortURL)
+
+    // 如果长链接为空，加载所有的localStorage
+    // 如果长链接不为空，加载匹配的localStorage
+    if (longUrl == "" || (longUrl == valueLongURL)) {
+      addUrlToList(keyShortURL, valueLongURL)
+    }
+  }
+}
+
+function addUrlToList(shortUrl, longUrl) {
+  let urlList = document.querySelector("#urlList")
+  let child = document.createElement('li')
+  let text = document.createTextNode(shortUrl + " " + longUrl)
+  child.appendChild(text)
+  child.classList.add("list-group-item")
+  urlList.append(child)
+}
+
+function clearLocalStorage() {
+  localStorage.clear()
+}
+
 $(function () {
   $('[data-toggle="popover"]').popover()
 })
+
+loadUrlList()
