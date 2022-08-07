@@ -106,22 +106,18 @@ function addUrlToList(shortUrl, longUrl) {
   let urlList = document.querySelector("#urlList")
 
   let child = document.createElement('div')
-  child.classList.add("list-group-item", "input-group", "mb-3")
+  shortUrl.classList.add("list-group-item")
 
-    let text = document.createElement('input')
-    text.setAttribute('type', 'text')
-    text.classList.add("form-control")
-    text.value = window.location.host + shortUrl + " " + longUrl
+  let btn = document.createElement('button')
+  btn.setAttribute('type', 'button')
+  btn.classList.add("btn", "btn-danger")
+  btn.setAttribute('onclick', 'deleteShortUrl(\"+ shortUrl +\")')
+  btn.innerText = "X"
+  child.appendChild(btn)
+
+  let text = document.createElement('span')
+  text.innerText = window.location.host + shortUrl + " " + longUrl
   child.appendChild(text)
-
-    let groupAppend = document.createElement('div')
-    groupAppend.classList.add("input-group-append")
-      let btn = document.createElement('button')
-      btn.setAttribute('type', 'button')
-      btn.classList.add("btn", "btn-outline-secondary")
-      btn.innerText = "Delete"
-    groupAppend.appendChild(btn)
-  child.appendChild(groupAppend)
 
   urlList.append(child)
 
@@ -142,7 +138,7 @@ function deleteShortUrl(delKeyPhrase) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ cmd: "del", keyPhrase: delKeyPhrase, password: document.querySelector("#passwordText").value })
   }).then(function (response) {
-    
+
   })
 
   // 加载localStorage
