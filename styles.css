@@ -27,7 +27,7 @@
     .btn {
       margin: 0 .375rem 0 0;
     }
-    .li {
+    .list-group-item {
       font-family: "Source Code Pro", Menlo, Monaco, Consolas, "Courier New", monospace;
     }
     @media (max-width: 769px) {
