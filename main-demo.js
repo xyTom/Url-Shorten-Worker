@@ -124,7 +124,7 @@ function addUrlToList(shortUrl, longUrl) {
   child.appendChild(groupAppend)
 
   urlList.append(child)
-  
+
   // let text = document.createTextNode(window.location.host + shortUrl + " " + longUrl)
 }
 
@@ -136,4 +136,4 @@ $(function () {
   $('[data-toggle="popover"]').popover()
 })
 
-loadUrlList()
+// loadUrlList()
