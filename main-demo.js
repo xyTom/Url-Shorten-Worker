@@ -142,7 +142,7 @@ function deleteShortUrl(delKeyPhrase) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ cmd: "del", keyPhrase: delKeyPhrase, password: document.querySelector("#passwordText").value })
   }).then(function (response) {
-    return response.json();
+    
   })
 }
 
