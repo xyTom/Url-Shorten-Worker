@@ -18,21 +18,22 @@ function shorturl() {
       res = myJson;
       document.getElementById("addBtn").disabled = false;
       document.getElementById("addBtn").innerHTML = 'Shorten it';
-      if (res.key !== "") {
-        document.getElementById("result").innerHTML = window.location.host + res.key;
-      }
-      $('#exampleModal').modal('show')
 
       // 成功生成短链
       if (res.status == "200") {
-        // let keyShortURL = window.location.host + res.key;
         let keyPhrase = res.key;
         let valueLongURL = document.querySelector("#longURL").value;
         // save to localStorage
         localStorage.setItem(keyPhrase, valueLongURL);
         // add to urlList on the page
         addUrlToList(keyPhrase, valueLongURL)
+
+        document.getElementById("result").innerHTML = window.location.host + "/" + res.key;
+      } else {
+        document.getElementById("result").innerHTML = res.error;
       }
+
+      $('#exampleModal').modal('show')
 
     }).catch(function (err) {
       alert("Unknow error. Please retry!");
