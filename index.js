@@ -91,60 +91,78 @@ async function handleRequest(request) {
 
   if (request.method === "POST") {
     let req=await request.json()
-    let req_url=req["url"]
-    let req_customShortURL=req["customShortURL"]
-    let req_password=req["password"]
+    let req_cmd=req["cmd"]
+    if (req_cmd == "add") {
+      let req_url=req["url"]
+      let req_keyPhrase=req["keyPhrase"]
+      let req_password=req["password"]
 
-    console.log(req_url)
-    console.log(req_customShortURL)
-    console.log(req_password)
-    if(!await checkURL(req_url)){
-      return new Response(`{"status":500,"key":": Error: Url illegal."}`, {
-        headers: response_header,
-      })
-    }
+      console.log(req_url)
+      console.log(req_keyPhrase)
+      console.log(req_password)
+      if(!await checkURL(req_url)){
+        return new Response(`{"status":500,"key":": Error: Url illegal."}`, {
+          headers: response_header,
+        })
+      }
 
-    if (req_password != password_value) {
-      return new Response(`{"status":500,"key":": Error: Invalid password."}`, {
-        headers: response_header,
-      })
-    }
+      if (req_password != password_value) {
+        return new Response(`{"status":500,"key":": Error: Invalid password."}`, {
+          headers: response_header,
+        })
+      }
 
-    let stat,random_key
-    if (config.custom_link && (req_customShortURL != "")){
-      let is_exist=await LINKS.get(req_customShortURL)
-      if (is_exist != null) {
-        return new Response(`{"status":500,"key":": Error: Custom shortURL existed."}`, {
+      let stat,random_key
+      if (config.custom_link && (req_keyPhrase != "")){
+        let is_exist=await LINKS.get(req_keyPhrase)
+        if (is_exist != null) {
+          return new Response(`{"status":500,"key":": Error: Custom shortURL existed."}`, {
+            headers: response_header,
+          })
+        }else{
+          random_key = req_keyPhrase
+          stat, await LINKS.put(req_keyPhrase, req_url)
+        }
+      } else if (config.unique_link){
+        let url_sha512 = await sha512(req_url)
+        let url_key = await is_url_exist(url_sha512)
+        if(url_key){
+          random_key = url_key
+        }else{
+          stat,random_key=await save_url(req_url)
+          if (typeof(stat) == "undefined"){
+            console.log(await LINKS.put(url_sha512,random_key))
+          }
+        }
+      }else{
+        stat,random_key=await save_url(req_url)
+      }
+      console.log(stat)
+      if (typeof(stat) == "undefined"){
+        return new Response(`{"status":200,"key":"/`+random_key+`"}`, {
           headers: response_header,
         })
       }else{
-        random_key = req_customShortURL
-        stat, await LINKS.put(req_customShortURL, req_url)
+        return new Response(`{"status":500,"key":": Error:Reach the KV write limitation."}`, {
+          headers: response_header,
+        })
       }
-    } else if (config.unique_link){
-      let url_sha512 = await sha512(req_url)
-      let url_key = await is_url_exist(url_sha512)
-      if(url_key){
-        random_key = url_key
-      }else{
-        stat,random_key=await save_url(req_url)
-        if (typeof(stat) == "undefined"){
-          console.log(await LINKS.put(url_sha512,random_key))
-        }
+    } else if (req_cmd == "del") {
+      let req_keyPhrase=req["keyPhrase"]
+      let req_password=req["password"]
+
+      if (req_password != password_value) {
+        return new Response(`{"status":500,"key":": Error: Invalid password."}`, {
+          headers: response_header,
+        })
       }
-    }else{
-      stat,random_key=await save_url(req_url)
-    }
-    console.log(stat)
-    if (typeof(stat) == "undefined"){
-      return new Response(`{"status":200,"key":"/`+random_key+`"}`, {
-        headers: response_header,
-      })
-    }else{
-      return new Response(`{"status":500,"key":": Error:Reach the KV write limitation."}`, {
+
+      await LINKS.delete(req_keyPhrase)
+      return new Response(`{"status":200}`, {
         headers: response_header,
       })
     }
+
   }else if(request.method === "OPTIONS"){  
       return new Response(``, {
       headers: response_header,
