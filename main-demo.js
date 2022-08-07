@@ -33,7 +33,7 @@ function shorturl() {
         document.getElementById("result").innerHTML = res.error;
       }
 
-      $('#exampleModal').modal('show')
+      $('#resultModal').modal('show')
 
     }).catch(function (err) {
       alert("Unknow error. Please retry!");
@@ -128,20 +128,36 @@ function clearLocalStorage() {
 }
 
 function deleteShortUrl(delKeyPhrase) {
-  // 从localStorage中删除
-  localStorage.removeItem(delKeyPhrase)
-
   // 从KV中删除
   fetch(window.location.pathname, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ cmd: "del", keyPhrase: delKeyPhrase, password: document.querySelector("#passwordText").value })
   }).then(function (response) {
-
+    return response.json();
   })
+  .then(function (myJson) {
+    res = myJson;
 
-  // 加载localStorage
-  loadUrlList()
+    // 成功删除
+    if (res.status == "200") {
+      // 从localStorage中删除
+      localStorage.removeItem(delKeyPhrase)
+
+      // 加载localStorage
+      loadUrlList()
+
+      document.getElementById("result").innerHTML = "Delete Successful"
+    } else {
+      document.getElementById("result").innerHTML = res.error;
+    }
+
+    $('#resultModal').modal('show')
+
+  }).catch(function (err) {
+    alert("Unknow error. Please retry!");
+    console.log(err);
+  })
 }
 
 $(function () {
