@@ -5,19 +5,19 @@ function shorturl() {
     return
   }
 
-  document.getElementById("searchbtn").disabled = true;
-  document.getElementById("searchbtn").innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Please wait...';
+  document.getElementById("addBtn").disabled = true;
+  document.getElementById("addBtn").innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Please wait...';
   fetch(window.location.pathname, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url: document.querySelector("#longURL").value, customShortURL: document.querySelector("#customShortURL").value, password: document.querySelector("#passwordText").value })
+    body: JSON.stringify({ cmd: "add", url: document.querySelector("#longURL").value, keyPhrase: document.querySelector("#keyPhrase").value, password: document.querySelector("#passwordText").value })
   }).then(function (response) {
     return response.json();
   })
     .then(function (myJson) {
       res = myJson;
-      document.getElementById("searchbtn").disabled = false;
-      document.getElementById("searchbtn").innerHTML = ' Shorten it';
+      document.getElementById("addBtn").disabled = false;
+      document.getElementById("addBtn").innerHTML = 'Shorten it';
       if (res.key !== "") {
         document.getElementById("result").innerHTML = window.location.host + res.key;
       }
@@ -37,8 +37,8 @@ function shorturl() {
     }).catch(function (err) {
       alert("Unknow error. Please retry!");
       console.log(err);
-      document.getElementById("searchbtn").disabled = false;
-      document.getElementById("searchbtn").innerHTML = ' Shorten it';
+      document.getElementById("addBtn").disabled = false;
+      document.getElementById("addBtn").innerHTML = 'Shorten it';
     })
 }
 function copyurl(id, attr) {
@@ -130,6 +130,20 @@ function addUrlToList(shortUrl, longUrl) {
 
 function clearLocalStorage() {
   localStorage.clear()
+}
+
+function deleteShortUrl(delKeyPhrase) {
+  // 从localStorage中删除
+  localStorage.removeItem(delKeyPhrase)
+
+  // 从KV中删除
+  fetch(window.location.pathname, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ cmd: "del", keyPhrase: delKeyPhrase, password: document.querySelector("#passwordText").value })
+  }).then(function (response) {
+    return response.json();
+  })
 }
 
 $(function () {
