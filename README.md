@@ -15,6 +15,14 @@ https://zelikk.blogspot.com/2022/07/url-shorten-worker-api-password.html
 
 https://zelikk.blogspot.com/2022/08/url-shorten-worker-localstorage.html
 
+长链接文本框预搜索localStorage
+
+https://zelikk.blogspot.com/2022/08/url-shorten-worker-bootstrap-list-group-oninput.html
+
+增加删除某条短链的按钮
+
+https://zelikk.blogspot.com/2022/08/url-shorten-worker-delete-kv-localstorage.html
+
 # 完整的部署教程
 https://zelikk.blogspot.com/2022/07/url-shorten-worker-hide-tutorial.html
 
