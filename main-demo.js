@@ -104,11 +104,28 @@ function loadUrlList() {
 
 function addUrlToList(shortUrl, longUrl) {
   let urlList = document.querySelector("#urlList")
+
   let child = document.createElement('div')
-  let text = document.createTextNode(window.location.host + shortUrl + " " + longUrl)
-  child.appendChild(text)
   child.classList.add("list-group-item", "input-group", "mb-3")
+
+    let text = document.createElement('input')
+    text.setAttribute('type', 'text')
+    text.classList.add("form-control")
+    text.value = window.location.host + shortUrl + " " + longUrl
+  child.appendChild(text)
+
+    let groupAppend = document.createElement('div')
+    groupAppend.classList.add("input-group-append")
+      let btn = document.createElement('button')
+      btn.setAttribute('type', 'button')
+      btn.classList.add("btn", "btn-outline-secondary")
+      btn.innerText = "Delete"
+    groupAppend.appendChild(btn)
+  child.appendChild(groupAppend)
+
   urlList.append(child)
+  
+  // let text = document.createTextNode(window.location.host + shortUrl + " " + longUrl)
 }
 
 function clearLocalStorage() {
