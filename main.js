@@ -5,39 +5,41 @@ function shorturl() {
     return
   }
 
-  document.getElementById("searchbtn").disabled = true;
-  document.getElementById("searchbtn").innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Please wait...';
+  document.getElementById("addBtn").disabled = true;
+  document.getElementById("addBtn").innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Please wait...';
   fetch(window.location.pathname, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url: document.querySelector("#longURL").value, customShortURL: document.querySelector("#customShortURL").value, password: document.querySelector("#passwordText").value })
+    body: JSON.stringify({ cmd: "add", url: document.querySelector("#longURL").value, keyPhrase: document.querySelector("#keyPhrase").value, password: document.querySelector("#passwordText").value })
   }).then(function (response) {
     return response.json();
   })
     .then(function (myJson) {
       res = myJson;
-      document.getElementById("searchbtn").disabled = false;
-      document.getElementById("searchbtn").innerHTML = ' Shorten it';
-      if (res.key !== "") {
-        document.getElementById("result").innerHTML = window.location.host + res.key;
-      }
-      $('#exampleModal').modal('show')
+      document.getElementById("addBtn").disabled = false;
+      document.getElementById("addBtn").innerHTML = 'Shorten it';
 
       // 成功生成短链
       if (res.status == "200") {
-        let keyShortURL = window.location.host + res.key;
+        let keyPhrase = res.key;
         let valueLongURL = document.querySelector("#longURL").value;
         // save to localStorage
-        localStorage.setItem(keyShortURL, valueLongURL);
+        localStorage.setItem(keyPhrase, valueLongURL);
         // add to urlList on the page
-        addUrlToList(keyShortURL, valueLongURL)
+        addUrlToList(keyPhrase, valueLongURL)
+
+        document.getElementById("result").innerHTML = window.location.host + "/" + res.key;
+      } else {
+        document.getElementById("result").innerHTML = res.error;
       }
+
+      $('#resultModal').modal('show')
 
     }).catch(function (err) {
       alert("Unknow error. Please retry!");
       console.log(err);
-      document.getElementById("searchbtn").disabled = false;
-      document.getElementById("searchbtn").innerHTML = ' Shorten it';
+      document.getElementById("addBtn").disabled = false;
+      document.getElementById("addBtn").innerHTML = 'Shorten it';
     })
 }
 function copyurl(id, attr) {
@@ -103,15 +105,59 @@ function loadUrlList() {
 
 function addUrlToList(shortUrl, longUrl) {
   let urlList = document.querySelector("#urlList")
-  let child = document.createElement('li')
-  let text = document.createTextNode(shortUrl + " " + longUrl)
-  child.appendChild(text)
+
+  let child = document.createElement('div')
   child.classList.add("list-group-item")
+
+  let btn = document.createElement('button')
+  btn.setAttribute('type', 'button')
+  btn.classList.add("btn", "btn-danger")
+  btn.setAttribute('onclick', 'deleteShortUrl(\"' + shortUrl + '\")')
+  btn.innerText = "X"
+  child.appendChild(btn)
+
+  let text = document.createElement('span')
+  text.innerText = window.location.host + "/" + shortUrl + " " + longUrl
+  child.appendChild(text)
+
   urlList.append(child)
 }
 
 function clearLocalStorage() {
   localStorage.clear()
+}
+
+function deleteShortUrl(delKeyPhrase) {
+  // 从KV中删除
+  fetch(window.location.pathname, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ cmd: "del", keyPhrase: delKeyPhrase, password: document.querySelector("#passwordText").value })
+  }).then(function (response) {
+    return response.json();
+  })
+    .then(function (myJson) {
+      res = myJson;
+
+      // 成功删除
+      if (res.status == "200") {
+        // 从localStorage中删除
+        localStorage.removeItem(delKeyPhrase)
+
+        // 加载localStorage
+        loadUrlList()
+
+        document.getElementById("result").innerHTML = "Delete Successful"
+      } else {
+        document.getElementById("result").innerHTML = res.error;
+      }
+
+      $('#resultModal').modal('show')
+
+    }).catch(function (err) {
+      alert("Unknow error. Please retry!");
+      console.log(err);
+    })
 }
 
 $(function () {
