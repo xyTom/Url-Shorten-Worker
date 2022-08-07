@@ -106,12 +106,12 @@ function addUrlToList(shortUrl, longUrl) {
   let urlList = document.querySelector("#urlList")
 
   let child = document.createElement('div')
-  shortUrl.classList.add("list-group-item")
+  child.classList.add("list-group-item")
 
   let btn = document.createElement('button')
   btn.setAttribute('type', 'button')
   btn.classList.add("btn", "btn-danger")
-  btn.setAttribute('onclick', 'deleteShortUrl(\"+ shortUrl +\")')
+  btn.setAttribute('onclick', 'deleteShortUrl(\"' + shortUrl + '\")')
   btn.innerText = "X"
   child.appendChild(btn)
 
@@ -120,8 +120,6 @@ function addUrlToList(shortUrl, longUrl) {
   child.appendChild(text)
 
   urlList.append(child)
-
-  // let text = document.createTextNode(window.location.host + shortUrl + " " + longUrl)
 }
 
 function clearLocalStorage() {
