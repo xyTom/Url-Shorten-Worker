@@ -25,12 +25,13 @@ function shorturl() {
 
       // 成功生成短链
       if (res.status == "200") {
-        let keyShortURL = window.location.host + res.key;
+        // let keyShortURL = window.location.host + res.key;
+        let keyPhrase = res.key;
         let valueLongURL = document.querySelector("#longURL").value;
         // save to localStorage
-        localStorage.setItem(keyShortURL, valueLongURL);
+        localStorage.setItem(keyPhrase, valueLongURL);
         // add to urlList on the page
-        addUrlToList(keyShortURL, valueLongURL)
+        addUrlToList(keyPhrase, valueLongURL)
       }
 
     }).catch(function (err) {
@@ -104,7 +105,7 @@ function loadUrlList() {
 function addUrlToList(shortUrl, longUrl) {
   let urlList = document.querySelector("#urlList")
   let child = document.createElement('li')
-  let text = document.createTextNode(shortUrl + " " + longUrl)
+  let text = document.createTextNode(window.location.host + shortUrl + " " + longUrl)
   child.appendChild(text)
   child.classList.add("list-group-item")
   urlList.append(child)
