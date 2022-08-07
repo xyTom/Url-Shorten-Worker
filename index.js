@@ -175,12 +175,13 @@ async function handleRequest(request) {
 
   console.log(path)
   if(!path){
-    return new Response(html404, {
+    return Response.redirect("https://zelikk.blogspot.com/search/label/Url-Shorten-Worker", 302)
+    /* new Response(html404, {
       headers: {
         "content-type": "text/html;charset=UTF-8",
       },
       status: 404
-    })
+    }) */
   }
   
   // 如果path符合password 显示应用界面
