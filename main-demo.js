@@ -164,4 +164,4 @@ $(function () {
   $('[data-toggle="popover"]').popover()
 })
 
-// loadUrlList()
+loadUrlList()
