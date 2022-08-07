@@ -144,6 +144,9 @@ function deleteShortUrl(delKeyPhrase) {
   }).then(function (response) {
     
   })
+
+  // 加载localStorage
+  loadUrlList()
 }
 
 $(function () {
