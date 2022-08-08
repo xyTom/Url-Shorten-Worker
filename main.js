@@ -113,6 +113,7 @@ function addUrlToList(shortUrl, longUrl) {
   btn.setAttribute('type', 'button')
   btn.classList.add("btn", "btn-danger")
   btn.setAttribute('onclick', 'deleteShortUrl(\"' + shortUrl + '\")')
+  btn.setAttribute('id', 'delBtn-' + shortUrl)
   btn.innerText = "X"
   child.appendChild(btn)
 
@@ -128,6 +129,10 @@ function clearLocalStorage() {
 }
 
 function deleteShortUrl(delKeyPhrase) {
+  // 按钮
+  document.getElementById("delBtn-" + delKeyPhrase).disabled = true;
+  document.getElementById("delBtn-" + delKeyPhrase).innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
+
   // 从KV中删除
   fetch(window.location.pathname, {
     method: 'POST',
