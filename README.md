@@ -1,4 +1,10 @@
-# 修改说明：
+# 演示
+https://1ladder.eu.org/6H4wjH
+
+# 完整的部署教程
+https://zelikk.blogspot.com/2022/07/url-shorten-worker-hide-tutorial.html
+
+# 在原版基础上的修改说明
 直接访问域名返回404。在KV中设置一个entry，保存秘密path，只有访问这个path才显示使用页面。
 
 https://zelikk.blogspot.com/2022/07/url-shorten-worker-hide-tutorial.html
@@ -22,12 +28,3 @@ https://zelikk.blogspot.com/2022/08/url-shorten-worker-bootstrap-list-group-onin
 增加删除某条短链的按钮
 
 https://zelikk.blogspot.com/2022/08/url-shorten-worker-delete-kv-localstorage.html
-
-演示:
-
-https://1ladder.eu.org/6H4wjH
-
-# 完整的部署教程
-https://zelikk.blogspot.com/2022/07/url-shorten-worker-hide-tutorial.html
-
-
