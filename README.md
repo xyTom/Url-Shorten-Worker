@@ -23,6 +23,10 @@ https://zelikk.blogspot.com/2022/08/url-shorten-worker-bootstrap-list-group-onin
 
 https://zelikk.blogspot.com/2022/08/url-shorten-worker-delete-kv-localstorage.html
 
+演示:
+
+https://1ladder.eu.org/6H4wjH
+
 # 完整的部署教程
 https://zelikk.blogspot.com/2022/07/url-shorten-worker-hide-tutorial.html
 
