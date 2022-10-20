@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="txt/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha256-L/W5Wfqfa0sdBNIKN9cG6QA5F2qx4qICmU2VgLruv9Y=" crossorigin="anonymous">
+  <title>Warning! The URL you are visiting is risky.|Shorter URL</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      cursor: default;
+    }
+    html, body {
+      height: 100%;
+
+    }
+    body {
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      justify-content: center;
+      vertical-align: center;
+      flex-wrap: wrap;
+      align-content: center;
+      background: red;
+      color: white;
+      overflow: hidden;
+    }
+    .card {
+      background-color: transparent;
+      width: 768px;
+    }
+    .card-text {
+      text-align: center;
+    }
+    .card-text > a {
+      text-decoration: none;
+      color: #f1f908;
+    }
+    .card-text > a {
+      cursor: pointer;
+    }
+    .form-control {
+        cursor: auto;
+    }
+    @media (max-width: 769px) {
+      .card {
+        width: 80%;
+      }
+    }
+    @media (max-width: 420px) {
+      .card {
+        width: 95%;
+      }
+    } 
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h5 class="card-header">Warning!</h5>
+    <div class="card-body">
+      <h5 class="card-title">The following url you are about to visit is not safe.</h5>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" value="{Replace}" id="text" disabled>
+        For your protection, we will not automatically redirect to this url. We recommend that you close this page and stop visiting that url, if you still need to visit, please manually copy the url link address into the address bar of your browser to open. Thank you.
+      </div>    
+      <div class="card-text">
+        Powered By: <a href="https://github.com/xyTom/Url-Shorten-Worker/" target="_self">Url Shorten Worker</a>
+      </div>
+      <p id="notice"></p>             
+    </div>
+  </div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Result</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="result">No result</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick='copyurl("result")' data-toggle="popover" data-placement="bottom" data-content="Copied!">Copy</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>    
+        </div>
+      </div>
+    </div>
+  </div>         
+  <script src="https://gcore.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+  <script src="https://gcore.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://gcore.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha256-WqU1JavFxSAMcLP2WIOI+GB2zWmShMI82mTpLDcqFUg=" crossorigin="anonymous"></script>
+  <script src="https://gcore.jsdelivr.net/npm/url-shorten-worker@1.0.5/main.js" crossorigin="anonymous"></script>
+</body>
+</html>
