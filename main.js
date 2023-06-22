@@ -118,12 +118,10 @@ function addUrlToList(shortUrl, longUrl) {
   child.appendChild(btn)
 
   let text = document.createElement('span')
-  text.innerText = '<input type="text" class="form-control" onfocus="this.select()">' + window.location.protocol + "//" + window.location.host + "/" + shortUrl + "</input>"
-    + " " 
-    + longUrl
-  child.appendChild(text);
+  text.innerText = window.location.protocol + "//" + window.location.host + "/" + shortUrl + " " + longUrl
+  child.appendChild(text)
 
-  urlList.append(child);
+  urlList.append(child)
 }
 
 function clearLocalStorage() {
