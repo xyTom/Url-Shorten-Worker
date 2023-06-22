@@ -118,7 +118,7 @@ function addUrlToList(shortUrl, longUrl) {
   child.appendChild(btn)
 
   let text = document.createElement('span')
-  text.innerText = '<text onfocus="this.select()">' + window.location.protocol + "//" + window.location.host + "/" + shortUrl + "</text>"
+  text.innerText = '<input type="text" class="form-control" onfocus="this.select()">' + window.location.protocol + "//" + window.location.host + "/" + shortUrl + "</input>"
     + " " 
     + longUrl
   child.appendChild(text);
