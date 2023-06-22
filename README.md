@@ -1,5 +1,5 @@
 # 演示
-https://1ladder.eu.org/6H4wjH
+https://1way.eu.org/zEKz23
 
 # 完整的部署教程
 https://zelikk.blogspot.com/2022/07/url-shorten-worker-hide-tutorial.html
