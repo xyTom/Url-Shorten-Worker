@@ -28,7 +28,7 @@ function shorturl() {
         // add to urlList on the page
         addUrlToList(keyPhrase, valueLongURL)
 
-        document.getElementById("result").innerHTML = window.location.host + "/" + res.key;
+        document.getElementById("result").innerHTML = window.location.protocol + "://" + window.location.host + "/" + res.key;
       } else {
         document.getElementById("result").innerHTML = res.error;
       }
@@ -118,7 +118,7 @@ function addUrlToList(shortUrl, longUrl) {
   child.appendChild(btn)
 
   let text = document.createElement('span')
-  text.innerText = window.location.host + "/" + shortUrl + " " + longUrl
+  text.innerText = window.location.protocol + "://" + window.location.host + "/" + shortUrl + " " + longUrl
   child.appendChild(text)
 
   urlList.append(child)
