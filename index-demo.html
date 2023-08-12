@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="txt/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <title>Shorter URL</title>
+  <link rel="stylesheet" href="https://crazypeace.github.io/Url-Shorten-Worker/styles.css">
+</head>
+<body>
+  <div class="card">
+    <h5 class="card-header">Shorten your URLs!</h5>
+    <div class="card-body">
+      <h5 class="card-title"> </h5>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">Long URL</span>
+        </div>
+        <input type="text" class="form-control" id="longURL" aria-describedby="basic-addon1" placeholder="Example: https://example.com/" oninput="loadUrlList()">
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon2">Custom Short URL</span>
+        </div>
+        <input type="text" class="form-control" id="keyPhrase" aria-describedby="basic-addon2" placeholder="As you wish">
+      </div>     
+
+      <div class="input-group mb-3">
+        <button class="btn btn-primary" type="button" onclick='shorturl()' id="addBtn">Shorten it</button>
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon3">password</span>
+        </div>
+        <input class="form-control" type="text" value="__PASSWORD__" readonly="true" id="passwordText" aria-describedby="basic-addon3">
+      </div>
+
+      <div class="input-group mb-3">
+        <button class="btn btn-info" type="button" onclick='loadUrlList()' id="loadListBtn">load localStorage</button>
+        <button class="btn btn-danger" type="button" onclick='clearLocalStorage()' id="clearlocalStgBtn">clear localStorage</button>
+      </div>
+
+      <div class="card-text">
+        <div classs="list-group" id="urlList"> 
+          <div class="list-group-item">
+            <button type="button" class="btn btn-danger" onclick='deleteShortUrl("4rEbzm")'>X</button>
+            <span>some text</span>
+          </div>
+          <div class="list-group-item">
+            <button type="button" class="btn btn-danger" onclick='deleteShortUrl("8NKY34")'>X</button>
+            <span>some text some text some text some text some text some text some text some text some text some text some text </span>
+          </div>
+        </div>
+      </div>      
+      
+      <div class="card-footer">
+        <span> <a href="https://github.com/crazypeace/Url-Shorten-Worker/" target="_self">Fork me on GitHub</a> </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="resultModalLabel">Result</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="result">No result</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick='copyurl("result")' data-toggle="popover" data-placement="bottom" data-content="Copied!">Copy</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>    
+        </div>
+      </div>
+    </div>
+  </div>         
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+
+  <script src="https://crazypeace.github.io/Url-Shorten-Worker/main-demo.js" crossorigin="anonymous"></script>
+  <!--
+    <script src="https://cdn.jsdelivr.net/gh/crazypeace/Url-Shorten-Worker@gh-pages/main.js" crossorigin="anonymous"></script>
+  -->
+</body>
+</html>
