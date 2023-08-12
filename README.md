@@ -38,3 +38,9 @@ https://lnks.eu.org/
 Note: Because someone abuse this demo website, all the generated link will automatically expired after 24 hours. For long-term use, please deploy your own.
 
 注意：所有由Demo网站生成的链接24小时后会自动失效，如需长期使用请自行搭建。
+
+# crazypeace 修改版
+
+https://github.com/xyTom/Url-Shorten-Worker/tree/crazypeace
+
+支持功能：1、自定义短链 2、页面缓存设置过的短链 3、长链接文本框预搜索localStorage 4、增加删除某条短链的按钮 5、密码保护
