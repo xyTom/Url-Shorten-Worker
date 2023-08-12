@@ -186,7 +186,7 @@ async function handleRequest(request) {
   
   // 如果path符合password 显示应用界面
   if (path==password_value){  
-    let index= await fetch("https://crazypeace.github.io/Url-Shorten-Worker/"+config.theme+"/index.html")
+    let index= await fetch("https://cdn.jsdelivr.net/gh/xyTom/Url-Shorten-Worker@crazypeace-gh-pages/"+config.theme+"/index.html")
     index=await index.text()
     index=index.replace(/__PASSWORD__/gm, password_value)
     return new Response(index, {
@@ -208,7 +208,7 @@ async function handleRequest(request) {
   
   if (location) {
     if (config.no_ref=="on"){
-      let no_ref= await fetch("https://crazypeace.github.io/Url-Shorten-Worker/no-ref.html")
+      let no_ref= await fetch("https://cdn.jsdelivr.net/gh/xyTom/Url-Shorten-Worker@crazypeace-gh-pages/no-ref.html")
       no_ref=await no_ref.text()
       no_ref=no_ref.replace(/{Replace}/gm, location)
       return new Response(no_ref, {
