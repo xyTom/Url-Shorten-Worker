@@ -28,9 +28,6 @@ A URL Shortener created using Cloudflare Worker
 
 https://alldownload.zip
 
-> [!NOTE]
-> Because someone abuse this demo website, all the generated link will automatically expired after 24 hours. For long-term use, please deploy your own.
-
 ## Crazypeace modified version
 
 https://github.com/datasense-gh/Url-Shorten-Worker/tree/crazypeace
