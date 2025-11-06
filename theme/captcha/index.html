@@ -1,0 +1,991 @@
+<!doctype html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha256-L/W5Wfqfa0sdBNIKN9cG6QA5F2qx4qICmU2VgLruv9Y=" crossorigin="anonymous">
+  <!-- CAP Worker CAPTCHA SDK -->
+  <script src="https://captcha.gurl.eu.org/cap.min.js"></script>
+  <title>Shorter URL - CAPTCHA Protected</title>
+  <style>
+    /* === Apple-Style Design System === */
+    :root {
+      --primary-blue: #007AFF;
+      --primary-blue-hover: #0051D5;
+      --primary-gradient: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
+      --success-gradient: linear-gradient(135deg, #34C759 0%, #30D158 100%);
+      --glass-bg: rgba(255, 255, 255, 0.85);
+      --glass-border: rgba(0, 0, 0, 0.04);
+      --shadow-subtle: 0 2px 16px rgba(0, 0, 0, 0.06);
+      --shadow-elevated: 0 8px 32px rgba(0, 0, 0, 0.12);
+      --shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.16);
+      --text-primary: #1d1d1f;
+      --text-secondary: #86868b;
+      --text-tertiary: #6e6e73;
+      --backdrop-blur: blur(30px);
+      --border-radius-sm: 10px;
+      --border-radius-md: 16px;
+      --border-radius-lg: 20px;
+      --transition-smooth: all 0.3s cubic-bezier(0.28, 0.11, 0.32, 1);
+      --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      --bg-light: #f5f5f7;
+      --bg-ultra-light: #fafafa;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      height: 100%;
+      overflow-x: hidden;
+    }
+    
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+      color: var(--text-primary);
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      background-size: 200% 200%;
+      animation: gradientShift 20s ease infinite;
+      position: relative;
+      overflow: hidden;
+      min-height: 100vh;
+    }
+    
+    /* Animated Background Orbs */
+    body::before,
+    body::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.2;
+      animation: float 25s ease-in-out infinite;
+    }
+    
+    body::before {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 122, 255, 0.4) 0%, rgba(88, 86, 214, 0) 70%);
+      top: -300px;
+      left: -300px;
+      animation-delay: -12s;
+    }
+    
+    body::after {
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(88, 86, 214, 0.3) 0%, rgba(0, 122, 255, 0) 70%);
+      bottom: -350px;
+      right: -350px;
+    }
+    
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      33% { transform: translate(30px, -30px) rotate(120deg); }
+      66% { transform: translate(-20px, 20px) rotate(240deg); }
+    }
+    
+    /* Main Card - Glassmorphism */
+    .card {
+      width: 680px;
+      max-width: 90vw;
+      background: var(--glass-bg);
+      backdrop-filter: var(--backdrop-blur);
+      -webkit-backdrop-filter: var(--backdrop-blur);
+      border-radius: var(--border-radius-lg);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--shadow-elevated);
+      overflow: hidden;
+      position: relative;
+      z-index: 10;
+      animation: cardEntrance 0.6s cubic-bezier(0.28, 0.11, 0.32, 1) backwards;
+    }
+    
+    @keyframes cardEntrance {
+      from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    
+    .card-header {
+      background: rgba(255, 255, 255, 0.6);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      padding: 32px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card-header-title {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+    
+    .card-header-subtitle {
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      letter-spacing: -0.2px;
+      line-height: 1.5;
+    }
+    
+    .card-body {
+      padding: 48px 40px;
+    }
+    
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      margin-bottom: 16px;
+      letter-spacing: -0.1px;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+    
+    /* Premium Input Group */
+    .input-group {
+      margin-bottom: 28px;
+      position: relative;
+    }
+    
+    .form-control {
+      height: 52px;
+      border: 1.5px solid rgba(0, 0, 0, 0.1);
+      border-radius: var(--border-radius-sm);
+      padding: 0 18px;
+      font-size: 17px;
+      background: #ffffff;
+      transition: var(--transition-smooth);
+      color: var(--text-primary);
+      box-shadow: none;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+      transform: translateY(0);
+      color: #ffffff;
+    }
+    
+    .form-control::placeholder {
+      color: #a0a0a5;
+    }
+    
+    .input-group-append {
+      margin-left: 12px;
+    }
+    
+    /* Premium Button */
+    .btn-primary {
+      height: 52px;
+      padding: 0 28px;
+      border: none;
+      border-radius: var(--border-radius-sm);
+      background: var(--primary-blue);
+      color: white;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      box-shadow: 0 2px 8px rgba(0, 122, 255, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn-primary:hover:not(:disabled) {
+      background: var(--primary-blue-hover);
+      box-shadow: 0 4px 16px rgba(0, 122, 255, 0.35);
+      transform: translateY(-1px);
+    }
+    
+    .btn-primary:active:not(:disabled) {
+      transform: scale(0.98);
+      box-shadow: 0 1px 4px rgba(0, 122, 255, 0.3);
+    }
+    
+    .btn-primary:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      box-shadow: none;
+      background: var(--text-secondary);
+    }
+    
+    /* CAPTCHA Modal - Clean Apple Style */
+    #captchaModal .modal-dialog {
+      max-width: 460px;
+    }
+    
+    #captchaModal .modal-content {
+      border-radius: var(--border-radius-md);
+      border: none;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+    
+    #captchaModal .modal-header {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    #captchaModal .modal-title {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      color: var(--text-primary);
+      text-align: center;
+      width: 100%;
+    }
+    
+    #captchaModal .modal-body {
+      padding: 32px 28px;
+      text-align: center;
+    }
+    
+    #captchaModal .close {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.4;
+      font-size: 28px;
+      font-weight: 300;
+      transition: opacity 0.2s;
+    }
+    
+    #captchaModal .close:hover {
+      opacity: 0.8;
+    }
+    
+    .captcha-description {
+      color: var(--text-secondary);
+      font-size: 15px;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Security Badge */
+    .security-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(0, 122, 255, 0.08);
+      border-radius: 6px;
+      color: var(--primary-blue);
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 12px;
+    }
+    
+    .security-badge svg {
+      width: 14px;
+      height: 14px;
+    }
+    
+    /* Footer Link */
+    .card-text {
+      text-align: center;
+      padding-top: 28px;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    
+    .card-text > a {
+      text-decoration: none;
+      color: var(--primary-blue);
+      font-weight: 500;
+      font-size: 15px;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 12px;
+      border-radius: 6px;
+    }
+    
+    .card-text > a::after {
+      content: '→';
+      display: inline-block;
+      transition: transform 0.2s;
+    }
+    
+    .card-text > a:hover {
+      background: rgba(0, 122, 255, 0.08);
+      opacity: 0.8;
+    }
+    
+    .card-text > a:hover::after {
+      transform: translateX(2px);
+    }
+    
+    /* Notice Messages */
+    #notice {
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    #notice .alert {
+      border-radius: var(--border-radius-sm);
+      border: none;
+      padding: 14px 18px;
+      font-weight: 500;
+      font-size: 15px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    
+    #notice .alert-success {
+      background: rgba(52, 199, 89, 0.1);
+      color: #248A3D;
+    }
+    
+    #notice .alert-danger {
+      background: rgba(255, 59, 48, 0.1);
+      color: #D70015;
+    }
+    
+    #notice .alert-warning {
+      background: rgba(255, 204, 0, 0.1);
+      color: #B45309;
+    }
+    
+    /* Result Modal Enhancements */
+    #exampleModal .modal-content {
+      border-radius: var(--border-radius-md);
+      border: none;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+    
+    #exampleModal .modal-header {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      padding: 24px 28px;
+    }
+    
+    #exampleModal .modal-title {
+      font-weight: 600;
+      font-size: 20px;
+      letter-spacing: -0.3px;
+      color: var(--text-primary);
+    }
+    
+    #exampleModal .modal-body {
+      padding: 32px 28px;
+      font-size: 17px;
+      word-break: break-all;
+      color: var(--primary-blue);
+      font-weight: 500;
+    }
+    
+    #exampleModal .modal-footer {
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      padding: 20px 28px;
+      gap: 12px;
+    }
+    
+    #exampleModal .modal-footer .btn {
+      border-radius: var(--border-radius-sm);
+      padding: 11px 24px;
+      font-weight: 600;
+      font-size: 17px;
+      transition: var(--transition-smooth);
+    }
+    
+    #exampleModal .modal-footer .btn-secondary {
+      background: rgba(134, 134, 139, 0.12);
+      color: var(--text-primary);
+      border: none;
+    }
+    
+    #exampleModal .modal-footer .btn-secondary:hover {
+      background: rgba(134, 134, 139, 0.2);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 769px) {
+      .card {
+        width: 95%;
+        margin: 20px 0;
+      }
+      
+      .card-header {
+        padding: 20px 24px;
+        font-size: 20px;
+      }
+      
+      .card-body {
+        padding: 32px 24px;
+      }
+      
+      .input-group {
+        flex-direction: column;
+      }
+      
+      .input-group-append {
+        margin-left: 0;
+        margin-top: 12px;
+        width: 100%;
+      }
+      
+      .btn-primary {
+        width: 100%;
+      }
+      
+      .captcha-container {
+        padding: 24px 16px;
+      }
+    }
+    
+    @media (max-width: 420px) {
+      .card {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+      }
+      
+      .badge-protected {
+        top: 12px;
+        right: 12px;
+        font-size: 11px;
+        padding: 6px 12px;
+      }
+    }
+    
+    /* Dark Mode - Apple Style */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --glass-bg: rgba(28, 28, 30, 0.9);
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --text-primary: #f5f5f7;
+        --text-secondary: #a1a1a6;
+        --text-tertiary: #8e8e93;
+        --bg-light: #1c1c1e;
+        --bg-ultra-light: #2c2c2e;
+      }
+      
+      body {
+        background: linear-gradient(135deg, #000000 0%, #1c1c1e 100%);
+      }
+      
+      body::before {
+        background: radial-gradient(circle, rgba(0, 122, 255, 0.15) 0%, rgba(88, 86, 214, 0) 70%);
+      }
+      
+      body::after {
+        background: radial-gradient(circle, rgba(88, 86, 214, 0.12) 0%, rgba(0, 122, 255, 0) 70%);
+      }
+      
+      .card-header {
+        background: rgba(28, 28, 30, 0.7);
+        border-bottom-color: rgba(255, 255, 255, 0.08);
+      }
+      
+      .form-control {
+        background: rgba(58, 58, 60, 0.8);
+        border-color: rgba(255, 255, 255, 0.1);
+        color: var(--text-primary);
+      }
+      
+      .form-control:focus {
+        background: rgba(58, 58, 60, 1);
+        border-color: var(--primary-blue);
+      }
+      
+      .modal-content {
+        background: rgba(28, 28, 30, 0.95);
+        color: var(--text-primary);
+      }
+      
+      .modal-header,
+      .modal-body,
+      .modal-footer {
+        background: rgba(28, 28, 30, 0.98);
+        border-color: rgba(255, 255, 255, 0.08);
+      }
+      
+      #exampleModal .modal-body {
+        color: var(--primary-blue);
+      }
+      
+      #exampleModal .modal-footer .btn-secondary {
+        background: rgba(142, 142, 147, 0.2);
+        color: var(--text-primary);
+      }
+      
+      #notice .alert-success {
+        background: rgba(52, 199, 89, 0.15);
+        color: #32D74B;
+      }
+      
+      #notice .alert-danger {
+        background: rgba(255, 69, 58, 0.15);
+        color: #FF453A;
+      }
+      
+      #notice .alert-warning {
+        background: rgba(255, 214, 10, 0.15);
+        color: #FFD60A;
+      }
+      
+      .security-badge {
+        background: rgba(0, 122, 255, 0.15);
+      }
+    }
+    
+    /* Loading Animation */
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    .loading {
+      position: relative;
+    }
+    
+    .loading::after {
+      content: '';
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    
+    /* Shake Animation for Errors */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-6px); }
+      20%, 40%, 60%, 80% { transform: translateX(6px); }
+    }
+    
+    /* Smooth Scroll */
+    * {
+      scroll-behavior: smooth;
+    }
+    
+    /* Enhanced Focus States */
+    button:focus,
+    input:focus,
+    a:focus {
+      outline: none;
+    }
+    
+    /* Selection Styling */
+    ::selection {
+      background: rgba(0, 122, 255, 0.2);
+      color: var(--text-primary);
+    }
+    
+    /* Cap Widget Styling Override */
+    cap-widget {
+      display: flex;
+      justify-content: center;
+      margin: 0 auto;
+      max-width: 100%;
+    }
+    
+    /* Smooth Modal Transitions */
+    .modal.fade .modal-dialog {
+      transition: transform 0.3s cubic-bezier(0.28, 0.11, 0.32, 1);
+    }
+    
+    .modal.show .modal-dialog {
+      transform: scale(1);
+    }
+    
+    /* Modal Backdrop */
+    .modal-backdrop.show {
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-header-title">Shorten your URLs</div>
+      <div class="card-header-subtitle">Fast, Secure, and Reliable URL Shortening Service</div>
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Please enter the long URL to be shortened :</h5>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Example: https://example.com/" id="text">
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button" onclick='shorturl()' id="searchbtn">Shorten it</button>
+        </div>
+      </div>
+      <div class="card-text">
+        <a href="https://github.com/xyTom/Url-Shorten-Worker/" target="_blank">View Source Code on GitHub</a>
+      </div>
+      <p id="notice"></p>             
+    </div>
+  </div>
+  
+  <!-- CAPTCHA Modal -->
+  <div class="modal fade" id="captchaModal" tabindex="-1" role="dialog" aria-labelledby="captchaModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="captchaModalLabel">CAPTCHA Verification</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="captcha-description">Please complete the CAPTCHA verification</p>
+          <cap-widget 
+            id="cap" 
+            data-cap-api-endpoint="https://captcha.gurl.eu.org/api/">
+          </cap-widget>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Result Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Short URL Generated</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="result">No Result</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick='copyurl("result")'>Copy Link</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>    
+        </div>
+      </div>
+    </div>
+  </div>         
+  <script src="https://gcore.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+  <script src="https://gcore.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://gcore.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha256-WqU1JavFxSAMcLP2WIOI+GB2zWmShMI82mTpLDcqFUg=" crossorigin="anonymous"></script>
+  <!-- <script src="https://gcore.jsdelivr.net/npm/url-shorten-worker@1.0.7/main.js" crossorigin="anonymous"></script> -->
+  
+  <!-- CAPTCHA Integration Script -->
+  <script>
+    // Global CAPTCHA token
+    let captchaToken = null;
+    let isProcessing = false;
+    let pendingUrl = null;
+    
+    // Wait for DOM to be ready
+    document.addEventListener('DOMContentLoaded', function() {
+      const widget = document.querySelector("#cap");
+      const searchBtn = document.getElementById('searchbtn');
+      const urlInput = document.getElementById('text');
+      
+      // Listen for CAPTCHA completion
+      if (widget) {
+        widget.addEventListener("solve", function(e) {
+          captchaToken = e.detail.token;
+          
+          console.log("✅ 验证成功");
+          
+          // Close CAPTCHA modal
+          $('#captchaModal').modal('hide');
+          
+          // Proceed with URL shortening
+          if (pendingUrl) {
+            performShortening(pendingUrl);
+            pendingUrl = null;
+          }
+        });
+      }
+      
+      // Add input validation and real-time feedback
+      if (urlInput) {
+        urlInput.addEventListener('input', function() {
+          const value = this.value.trim();
+          if (value && !isValidUrl(value)) {
+            this.style.borderColor = 'rgba(255, 59, 48, 0.4)';
+          } else {
+            this.style.borderColor = 'rgba(0, 0, 0, 0.1)';
+          }
+        });
+        
+        // Allow Enter key to submit
+        urlInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter' && !isProcessing) {
+            shorturl();
+          }
+        });
+      }
+    });
+    
+    // URL validation helper
+    function isValidUrl(string) {
+      try {
+        const url = new URL(string);
+        return url.protocol === 'http:' || url.protocol === 'https:';
+      } catch (_) {
+        return false;
+      }
+    }
+    
+    // Main shorturl function
+    window.shorturl = function() {
+      // Prevent double submission
+      if (isProcessing) return;
+      
+      const notice = document.getElementById('notice');
+      const urlInput = document.getElementById('text');
+      
+      // Get the URL input
+      if (!urlInput || !urlInput.value.trim()) {
+        if (notice) {
+          notice.innerHTML = '<div class="alert alert-danger mt-3" style="animation: shake 0.5s;">请输入链接地址</div>';
+        }
+        urlInput.focus();
+        return;
+      }
+      
+      const longUrl = urlInput.value.trim();
+      
+      // Validate URL format
+      if (!isValidUrl(longUrl)) {
+        if (notice) {
+          notice.innerHTML = '<div class="alert alert-danger mt-3" style="animation: shake 0.5s;">请输入有效的 URL（需包含 http:// 或 https://）</div>';
+        }
+        urlInput.style.borderColor = 'rgba(255, 59, 48, 0.4)';
+        urlInput.focus();
+        return;
+      }
+      
+      // Clear previous notices
+      if (notice) {
+        notice.innerHTML = '';
+      }
+      
+      // Check if CAPTCHA is completed
+      if (!captchaToken) {
+        // Store URL and show CAPTCHA modal
+        pendingUrl = longUrl;
+        $('#captchaModal').modal('show');
+        return;
+      }
+      
+      // Perform shortening with existing token
+      performShortening(longUrl);
+    };
+    
+    // Perform actual URL shortening
+    function performShortening(longUrl) {
+      if (isProcessing) return;
+      
+      isProcessing = true;
+      
+      const notice = document.getElementById('notice');
+      const searchBtn = document.getElementById('searchbtn');
+      const urlInput = document.getElementById('text');
+      
+      // Add loading class and disable button
+      if (searchBtn) {
+        searchBtn.disabled = true;
+        searchBtn.classList.add('loading');
+        searchBtn.textContent = '生成中...';
+      }
+      
+      // Prepare request body with CAPTCHA token
+      const requestBody = {
+        url: longUrl,
+        captcha_token: captchaToken
+      };
+      
+      // Make API request
+      fetch(window.location.origin, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody)
+      })
+      .then(response => response.json())
+      .then(data => {
+        const resultDiv = document.getElementById('result');
+        
+        if (data.status === 200) {
+          // Success
+          const shortUrl = window.location.origin + data.key;
+          if (resultDiv) {
+            resultDiv.innerHTML = '<div style="animation: fadeInUp 0.4s;">' + shortUrl + '</div>';
+          }
+          
+          // Show modal
+          setTimeout(() => {
+            $('#exampleModal').modal('show');
+          }, 100);
+          
+          // Reset CAPTCHA token for next use
+          captchaToken = null;
+          
+          // Clear input
+          if (urlInput) {
+            urlInput.value = '';
+            urlInput.style.borderColor = 'rgba(0, 0, 0, 0.1)';
+          }
+          
+          // Show success notice briefly
+          if (notice) {
+            notice.innerHTML = '<div class="alert alert-success mt-3" style="animation: fadeInUp 0.4s;">✅ 短链接创建成功！</div>';
+            setTimeout(() => {
+              notice.innerHTML = '';
+            }, 3000);
+          }
+        } else {
+          // Error handling
+          const errorMsg = data.error || '创建失败';
+          if (notice) {
+            notice.innerHTML = '<div class="alert alert-danger mt-3" style="animation: shake 0.5s;">❌ ' + errorMsg + '</div>';
+          }
+          
+          // If CAPTCHA required or invalid, reset token
+          if (data.captcha_required || errorMsg.includes('CAPTCHA') || errorMsg.includes('captcha')) {
+            captchaToken = null;
+          }
+        }
+      })
+      .catch(error => {
+        console.error('请求错误:', error);
+        if (notice) {
+          notice.innerHTML = '<div class="alert alert-danger mt-3" style="animation: shake 0.5s;">❌ 网络错误：' + error.message + '</div>';
+        }
+      })
+      .finally(() => {
+        isProcessing = false;
+        
+        // Reset button state
+        if (searchBtn) {
+          searchBtn.classList.remove('loading');
+          searchBtn.textContent = '生成短链接';
+          searchBtn.disabled = false;
+        }
+      });
+    }
+    
+    // Copy URL function with modern Clipboard API
+    window.copyurl = function(elementId) {
+      const element = document.getElementById(elementId);
+      if (!element) return;
+      
+      const textToCopy = element.textContent;
+      
+      // Try modern Clipboard API first
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(textToCopy)
+          .then(() => {
+            showCopySuccess();
+          })
+          .catch(() => {
+            // Fallback to execCommand
+            fallbackCopy(textToCopy);
+          });
+      } else {
+        fallbackCopy(textToCopy);
+      }
+    };
+    
+    // Fallback copy method
+    function fallbackCopy(text) {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      textArea.style.top = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      
+      try {
+        document.execCommand('copy');
+        showCopySuccess();
+      } catch (err) {
+        console.error('Failed to copy:', err);
+        showCopyError();
+      }
+      
+      document.body.removeChild(textArea);
+    }
+    
+    // Show copy success feedback
+    function showCopySuccess() {
+      const copyBtn = document.querySelector('[onclick*="copyurl"]');
+      if (copyBtn) {
+        const originalText = copyBtn.textContent;
+        copyBtn.innerHTML = '✓ 已复制';
+        copyBtn.style.background = 'linear-gradient(135deg, #34C759 0%, #30D158 100%)';
+        copyBtn.style.transform = 'scale(1.02)';
+        
+        setTimeout(() => {
+          copyBtn.textContent = originalText;
+          copyBtn.style.background = '';
+          copyBtn.style.transform = '';
+        }, 2000);
+      }
+    }
+    
+    // Show copy error feedback
+    function showCopyError() {
+      const copyBtn = document.querySelector('[onclick*="copyurl"]');
+      if (copyBtn) {
+        const originalText = copyBtn.textContent;
+        copyBtn.innerHTML = '✗ 复制失败';
+        copyBtn.style.background = 'linear-gradient(135deg, #FF453A 0%, #FF3B30 100%)';
+        
+        setTimeout(() => {
+          copyBtn.textContent = originalText;
+          copyBtn.style.background = '';
+        }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>
