@@ -103,7 +103,7 @@ const config = {
       redirect: 'follow'
     };
   
-    result = await fetch("https://safebrowsing.googleapis.com/v4/threatMatches:find?key="+config.safe_browsing_api_key, requestOptions)
+    let result = await fetch("https://safebrowsing.googleapis.com/v4/threatMatches:find?key="+config.safe_browsing_api_key, requestOptions)
     result = await result.json()
     console.log(result)
     if (Object.keys(result).length === 0){
