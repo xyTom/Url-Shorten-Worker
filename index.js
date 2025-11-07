@@ -82,7 +82,7 @@ const config = {
       if (is_exist == null)
           return await LINKS.put(random_key, URL),random_key
       else
-          save_url(URL)
+          return save_url(URL)
   }
   async function is_url_exist(url_sha512){
     let is_exist = await LINKS.get(url_sha512)
