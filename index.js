@@ -145,6 +145,7 @@ const config = {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'User-Agent': 'Url-Shorten-Worker/1.0.7',
           },
           body: JSON.stringify({ token, keepToken }),
           signal: controller.signal,
@@ -159,7 +160,7 @@ const config = {
         }
   
         // Handle specific error codes
-        if (response.status === 400 || response.status === 401) {
+        if (response.status === 400 || response.status === 401 || response.status === 404) {
           // Client error, no need to retry
           return { success: false, error: 'Invalid or expired token' };
         }
