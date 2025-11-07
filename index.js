@@ -42,7 +42,7 @@ const config = {
   　　let $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
   　　let maxPos = $chars.length;
   　　let result = '';
-  　　for (i = 0; i < len; i++) {
+  　　for (let i = 0; i < len; i++) {
   　　　　result += $chars.charAt(Math.floor(Math.random() * maxPos));
   　　}
   　　return result;
