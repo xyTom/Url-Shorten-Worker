@@ -160,7 +160,7 @@ const config = {
         }
   
         // Handle specific error codes
-        if (response.status === 400 || response.status === 401 || response.status === 404) {
+        if (response.status === 400 || response.status === 410 || response.status === 404 || response.status === 409) {
           // Client error, no need to retry
           return { success: false, error: 'Invalid or expired token' };
         }
