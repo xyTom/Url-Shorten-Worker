@@ -5,6 +5,7 @@ const config = {
   unique_link:true,//If it is true, the same long url will be shorten into the same short url
   custom_link:false,//Allow users to customize the short url.
   safe_browsing_api_key: "", //Enter Google Safe Browsing API Key to enable url safety check before redirect.
+  expiration_ttl: 0, // Short link expiration time in seconds. 86400 = 24 hours. Set to 0 for no expiration.
   
   // CAPTCHA Configuration
   captcha: {
@@ -79,8 +80,10 @@ const config = {
       let random_key=await randomString()
       let is_exist=await LINKS.get(random_key)
       console.log(is_exist)
-      if (is_exist == null)
-          return await LINKS.put(random_key, URL),random_key
+      if (is_exist == null) {
+          const kvOptions = config.expiration_ttl > 0 ? { expirationTtl: config.expiration_ttl } : {};
+          return await LINKS.put(random_key, URL, kvOptions), random_key
+      }
       else
           return save_url(URL)
   }
@@ -292,7 +295,8 @@ const config = {
         } else {
           stat, random_key = await save_url(req["url"])
           if (typeof(stat) == "undefined") {
-            console.log(await LINKS.put(url_sha512, random_key))
+            const kvOptions = config.expiration_ttl > 0 ? { expirationTtl: config.expiration_ttl } : {};
+            console.log(await LINKS.put(url_sha512, random_key, kvOptions))
           }
         }
       } else {
