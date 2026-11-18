@@ -6,7 +6,7 @@ A URL Shortener created using Cloudflare Worker
 📄 **Pastebin (Text Sharing)** - Share plain text, code snippets, and logs alongside short URLs
 - Built-in dual-mode homepage (`Shorten URL` + `Pastebin`) with dark/light mode and file upload
 - Styled reader page with one-click copy, line wrap toggle, `.txt` download, and `?raw=1` / `/raw/:key` plain-text output
-- UTF-8 byte-size validation up to `24 MiB` by default (hard-capped below Cloudflare KV's `25 MiB` value limit)
+- UTF-8 byte-size validation up to `10 MiB` by default (configurable in `config.paste.max_bytes`, hard-capped below Cloudflare KV's `25 MiB` value limit)
 
 🔒 **CAPTCHA Protection** - Integrated with [CAP Worker](https://captcha.gurl.eu.org) for bot prevention and abuse protection
 - Configurable CAPTCHA on link creation and access

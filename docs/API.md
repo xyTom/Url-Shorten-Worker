@@ -50,7 +50,7 @@ curl -X POST "https://url.dem0.workers.dev/" \
   --data-binary @server.log
 ```
 
-> **Storage Limit**: By default, `config.paste.max_bytes` allows up to **`24 MiB`** (`25,165,824` UTF-8 bytes) per paste, and enforces a hard ceiling below Cloudflare Workers KV's `25 MiB` (`26,214,400` bytes) value limit.
+> **Storage Limit**: By default, `config.paste.max_bytes` allows up to **`10 MiB`** (`10,485,760` UTF-8 bytes) per paste, and enforces a hard ceiling below Cloudflare Workers KV's `25 MiB` (`26,214,400` bytes) value limit.
 
 ---
 

@@ -50,7 +50,7 @@ curl -X POST "https://url.dem0.workers.dev/" \
   --data-binary @server.log
 ```
 
-> **存储上限说明**：`config.paste.max_bytes` 默认允许单条 **`24 MiB`**（`25,165,824` UTF-8 字节），并在代码层强制兜底不超过 Cloudflare Workers KV 单 Value 的 **`25 MiB`**（`26,214,400` 字节）硬上限。
+> **存储上限说明**：`config.paste.max_bytes` 默认允许单条 **`10 MiB`**（`10,485,760` UTF-8 字节），支持按需调整，并在代码层强制兜底不超过 Cloudflare Workers KV 单 Value 的 **`25 MiB`**（`26,214,400` 字节）硬上限。
 
 ---
 

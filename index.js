@@ -10,7 +10,7 @@ const config = {
   // Pastebin (Text Sharing) Configuration
   paste: {
     enabled: true, // Enable storing and viewing plain text pastes
-    max_bytes: 24 * 1024 * 1024, // Max UTF-8 byte size per paste (default: 24 MiB; Cloudflare KV hard value limit is 25 MiB = 26,214,400 bytes)
+    max_bytes: 10 * 1024 * 1024, // Max UTF-8 byte size per paste (default: 10 MiB; Cloudflare KV hard value limit is 25 MiB = 26,214,400 bytes)
   },
 
   // CAPTCHA Configuration
@@ -37,7 +37,7 @@ function getEffectiveMaxPasteBytes() {
   if (Number.isFinite(configured) && configured > 0) {
     return Math.min(Math.floor(configured), kvSafeLimit)
   }
-  return Math.min(24 * 1024 * 1024, kvSafeLimit)
+  return Math.min(10 * 1024 * 1024, kvSafeLimit)
 }
 
 function getUtf8ByteLength(str) {
@@ -2268,7 +2268,7 @@ async function handleRequest(request, event = null) {
             actual_bytes: declaredLength,
           }, 413)
         }
-        const maxJsonBodyBytes = Math.max(maxPasteBytes + 2 * 1024 * 1024, 36 * 1024 * 1024)
+        const maxJsonBodyBytes = Math.min(maxPasteBytes * 2 + 64 * 1024, 36 * 1024 * 1024)
         if (!isPlainTextBody && declaredLength > maxJsonBodyBytes) {
           return jsonResponse({
             status: 413,
