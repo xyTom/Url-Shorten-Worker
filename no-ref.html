@@ -1,21 +1,93 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-	<title>Url-Shorten-Worker</title>
-	<meta http-equiv="Refresh" content="1; url={Replace}" />
-	<meta name="referrer" content="no-referrer" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <title>Redirecting...</title>
+  <noscript><meta http-equiv="refresh" content="0; url={Replace}"></noscript>
+  <style>
+    :root {
+      --bg: #f5f5f7;
+      --card: rgba(255, 255, 255, 0.9);
+      --text: #111827;
+      --muted: #86868b;
+      --border: #e5e7eb;
+      --blue: #007AFF;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        color-scheme: dark;
+        --bg: #000000;
+        --card: rgba(17, 24, 39, 0.9);
+        --text: #f3f4f6;
+        --muted: #9ca3af;
+        --border: #1f2937;
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+    }
+    .card {
+      max-width: 380px;
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem 1.75rem;
+      text-align: center;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08);
+    }
+    .spinner {
+      width: 28px;
+      height: 28px;
+      margin: 0 auto 1rem;
+      border: 2.5px solid rgba(0, 122, 255, 0.2);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin 0.65s linear infinite;
+    }
+    h1 { font-size: 1.15rem; font-weight: 600; margin-bottom: 0.35rem; }
+    p { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.25rem; }
+    a {
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--blue);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
 </head>
-
 <body>
-	<p>Redirecting..<br /><a href="{Replace}">{Replace}</a></p>
-	<a href="https://github.com/xyTom/Url-Shorten-Worker/" target="_self">Fork me on GitHub</a>
-	<script type="text/javascript">
-		/* <![CDATA[ */
-		setTimeout('window.location.replace( "{Replace}" + window.location.hash );', 1000 )
-
-/* ]]> */
-	</script>
+  <div class="card">
+    <div class="spinner" aria-hidden="true"></div>
+    <h1>Redirecting...</h1>
+    <p>Taking you to your destination securely.</p>
+    <a id="targetLink" href="{Replace}" rel="noreferrer noopener">Continue to Destination →</a>
+  </div>
+  <script>
+    (function () {
+      var link = document.getElementById("targetLink");
+      var raw = window.__REDIRECT_URL__ || (link ? link.getAttribute("href") : "");
+      if (!raw) return;
+      try {
+        var target = new URL(raw, window.location.origin);
+        if (window.location.hash && !target.hash) {
+          target.hash = window.location.hash;
+        }
+        window.location.replace(target.toString());
+      } catch (e) {}
+    })();
+  </script>
 </body>
-
 </html>

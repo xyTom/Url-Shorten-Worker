@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Security Verification - URL Shortener</title>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'apple-blue': '#007AFF',
+            'apple-blue-dark': '#0051D5',
+            'apple-green': '#34C759',
+            'apple-red': '#FF3B30',
+            'apple-gray': '#86868b',
+            'apple-gray-light': '#f5f5f7',
+          },
+          fontFamily: {
+            'sf': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'sans-serif'],
+            'mono': ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+          animation: {
+            'float': 'float 20s ease-in-out infinite',
+            'slide-up': 'slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+            'fade-in': 'fadeIn 0.25s ease',
+            'shake': 'shake 0.45s ease',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translate(0, 0) rotate(0deg)' },
+              '33%': { transform: 'translate(30px, -30px) rotate(120deg)' },
+              '66%': { transform: 'translate(-20px, 20px) rotate(240deg)' },
+            },
+            slideUp: {
+              'from': { opacity: '0', transform: 'translateY(28px)' },
+              'to': { opacity: '1', transform: 'translateY(0)' },
+            },
+            fadeIn: {
+              'from': { opacity: '0', transform: 'translateY(-6px)' },
+              'to': { opacity: '1', transform: 'translateY(0)' },
+            },
+            shake: {
+              '0%, 100%': { transform: 'translateX(0)' },
+              '25%': { transform: 'translateX(-6px)' },
+              '75%': { transform: 'translateX(6px)' },
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    @media (prefers-color-scheme: dark) {
+      :root { color-scheme: dark; }
+    }
+    .glass {
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .animate-spin-custom {
+      animation: spin 0.6s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    @media (max-width: 640px) {
+      cap-widget { transform: scale(0.92); transform-origin: center center; }
+    }
+    @media (max-width: 390px) {
+      cap-widget { transform: scale(0.84); transform-origin: center center; }
+    }
+  </style>
+</head>
+<body class="font-sf bg-apple-gray-light dark:bg-black text-gray-900 dark:text-gray-100 min-h-screen flex items-center justify-center p-5 relative overflow-x-hidden antialiased">
+
+  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
+    <div id="primaryOrb" class="absolute top-[-250px] left-[-250px] w-[500px] h-[500px] rounded-full bg-apple-blue/15 blur-[80px] animate-float"></div>
+    <div class="absolute bottom-[-300px] right-[-300px] w-[600px] h-[600px] rounded-full bg-purple-500/10 blur-[80px] animate-float" style="animation-delay: -10s;"></div>
+  </div>
+
+  <main class="w-full max-w-md relative z-10">
+    <div class="bg-white/90 dark:bg-gray-900/90 glass border border-gray-200 dark:border-gray-800 rounded-2xl shadow-xl overflow-hidden animate-slide-up">
+
+      <header class="px-6 sm:px-8 pt-8 pb-6 text-center border-b border-gray-200 dark:border-gray-800">
+        <div id="iconBadge" class="w-[52px] h-[52px] rounded-2xl inline-flex items-center justify-center mb-4 bg-apple-blue/10 text-apple-blue">
+          <svg id="iconShield" class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          <svg id="iconError" class="w-7 h-7 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <h1 id="heading" class="text-2xl font-bold tracking-tight mb-1.5">Security Verification</h1>
+        <p id="subtitle" class="text-apple-gray dark:text-gray-400 text-xs sm:text-sm leading-relaxed">Please complete the CAPTCHA below to continue to your destination.</p>
+      </header>
+
+      <!-- Challenge Body -->
+      <div id="challengeBody" class="p-6 sm:p-7">
+        <div id="shortLinkWrap" class="hidden justify-center mb-4">
+          <div class="inline-flex items-center gap-1.5 max-w-full px-3 py-1 bg-apple-gray-light dark:bg-white/5 border border-gray-200 dark:border-gray-800 rounded-full text-xs font-mono text-apple-gray dark:text-gray-400">
+            <svg class="w-3.5 h-3.5 text-apple-blue shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span id="shortLinkText" class="truncate"></span>
+          </div>
+        </div>
+
+        <div id="capContainer" class="flex justify-center items-center min-h-[88px] p-4 bg-apple-gray-light dark:bg-white/5 border border-gray-200 dark:border-gray-800 rounded-xl"></div>
+
+        <div id="statusNotice" class="hidden mt-4 px-4 py-3 rounded-xl text-sm font-medium text-center items-center justify-center gap-2" role="status" aria-live="polite"></div>
+
+        <div id="retryWrap" class="hidden mt-4">
+          <button type="button" id="retryChallengeBtn" class="w-full h-11 px-5 font-semibold text-sm text-gray-700 dark:text-gray-200 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 rounded-xl transition-all">
+            Retry Challenge
+          </button>
+        </div>
+      </div>
+
+      <!-- Failed Body -->
+      <div id="failedBody" class="hidden p-6 sm:p-7">
+        <div id="failedMessage" class="px-4 py-3 rounded-xl text-sm font-medium text-center bg-apple-red/10 border border-apple-red/25 text-apple-red animate-shake" role="alert"></div>
+        <div class="flex flex-col gap-2.5 mt-5">
+          <a id="tryAgainBtn" href="#" class="w-full h-11 px-6 font-semibold text-sm flex items-center justify-center text-white bg-apple-blue hover:bg-apple-blue-dark rounded-xl transition-all hover:-translate-y-0.5 hover:shadow-lg">
+            Try Verification Again
+          </a>
+          <a href="/" class="w-full h-11 px-6 font-semibold text-sm flex items-center justify-center text-gray-700 dark:text-gray-200 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 rounded-xl transition-all">
+            Back to Homepage
+          </a>
+        </div>
+      </div>
+
+      <footer class="px-6 py-4 text-center border-t border-gray-200 dark:border-gray-800">
+        <a href="https://github.com/xyTom/Url-Shorten-Worker/" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium text-apple-blue hover:bg-apple-blue/5 rounded-lg transition-all group">
+          <span>View Source Code</span>
+          <span class="transition-transform duration-200 group-hover:translate-x-1">→</span>
+        </a>
+      </footer>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      const ctx = window.__CAPTCHA_CONTEXT__ || {};
+      const mode = ctx.mode || 'challenge';
+      const sdkUrl = ctx.sdkUrl || 'https://captcha.gurl.eu.org/cap.min.js';
+      const apiEndpoint = ctx.apiEndpoint || 'https://captcha.gurl.eu.org/api/';
+
+      if (mode === 'failed') {
+        document.title = 'Verification Failed - URL Shortener';
+        document.getElementById('primaryOrb').className = 'absolute top-[-250px] left-[-250px] w-[500px] h-[500px] rounded-full bg-apple-red/15 blur-[80px] animate-float';
+        const badge = document.getElementById('iconBadge');
+        badge.classList.remove('bg-apple-blue/10', 'text-apple-blue');
+        badge.classList.add('bg-apple-red/10', 'text-apple-red');
+        document.getElementById('iconShield').classList.add('hidden');
+        document.getElementById('iconError').classList.remove('hidden');
+        document.getElementById('heading').textContent = 'Verification Failed';
+        document.getElementById('subtitle').textContent = "We couldn't validate your security verification token.";
+        document.getElementById('challengeBody').classList.add('hidden');
+        document.getElementById('failedBody').classList.remove('hidden');
+        document.getElementById('failedMessage').textContent = ctx.error || 'Invalid or expired CAPTCHA token';
+        document.getElementById('tryAgainBtn').href = ctx.retryHref || window.location.pathname;
+        return;
+      }
+
+      if (ctx.shortLink) {
+        document.getElementById('shortLinkText').textContent = ctx.shortLink;
+        const wrap = document.getElementById('shortLinkWrap');
+        wrap.classList.remove('hidden');
+        wrap.classList.add('flex');
+      }
+
+      const notice = document.getElementById('statusNotice');
+      const retryWrap = document.getElementById('retryWrap');
+      const retryBtn = document.getElementById('retryChallengeBtn');
+      let sdkError = false;
+
+      function setNotice(type, text, showSpinner) {
+        notice.innerHTML = '';
+        notice.className = 'mt-4 px-4 py-3 rounded-xl text-sm font-medium text-center flex items-center justify-center gap-2 ' + (
+          type === 'success'
+            ? 'bg-apple-green/10 border border-apple-green/25 text-apple-green animate-fade-in'
+            : 'bg-apple-red/10 border border-apple-red/25 text-apple-red animate-shake'
+        );
+        if (showSpinner) {
+          const sp = document.createElement('span');
+          sp.className = 'w-4 h-4 border-2 border-current border-r-transparent rounded-full animate-spin-custom shrink-0';
+          notice.appendChild(sp);
+        }
+        const span = document.createElement('span');
+        span.textContent = text;
+        notice.appendChild(span);
+      }
+
+      const script = document.createElement('script');
+      script.src = sdkUrl;
+      script.defer = true;
+      script.onerror = function () {
+        sdkError = true;
+        setNotice('error', 'Failed to load verification widget. Please check your connection.', false);
+        retryWrap.classList.remove('hidden');
+      };
+      document.head.appendChild(script);
+
+      const widget = document.createElement('cap-widget');
+      widget.id = 'cap';
+      widget.setAttribute('data-cap-api-endpoint', apiEndpoint);
+      document.getElementById('capContainer').appendChild(widget);
+
+      widget.addEventListener('solve', function (e) {
+        const token = e && e.detail ? e.detail.token : '';
+        if (!token) return;
+        retryWrap.classList.add('hidden');
+        setNotice('success', 'Verified! Redirecting to destination...', true);
+        const nextUrl = new URL(window.location.href);
+        nextUrl.searchParams.set('captcha_token', token);
+        window.location.href = nextUrl.toString();
+      });
+
+      widget.addEventListener('error', function () {
+        setNotice('error', 'CAPTCHA verification failed. Please try again.', false);
+        retryWrap.classList.remove('hidden');
+      });
+
+      widget.addEventListener('reset', function () {
+        notice.className = 'hidden';
+        retryWrap.classList.add('hidden');
+      });
+
+      retryBtn.addEventListener('click', function () {
+        if (!sdkError && typeof widget.reset === 'function') {
+          try {
+            widget.reset();
+            notice.className = 'hidden';
+            retryWrap.classList.add('hidden');
+            return;
+          } catch {}
+        }
+        window.location.reload();
+      });
+    })();
+  </script>
+</body>
+</html>

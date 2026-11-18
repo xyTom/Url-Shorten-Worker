@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="referrer" content="no-referrer">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Pastebin Reader</title>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'apple-blue': '#007AFF',
+            'apple-blue-dark': '#0051D5',
+            'apple-green': '#34C759',
+            'apple-red': '#FF3B30',
+            'apple-gray': '#86868b',
+            'apple-gray-light': '#f5f5f7',
+          },
+          fontFamily: {
+            'sf': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'sans-serif'],
+            'mono': ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'monospace'],
+          },
+          animation: {
+            'float': 'float 20s ease-in-out infinite',
+            'slide-up': 'slideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translate(0, 0) rotate(0deg)' },
+              '33%': { transform: 'translate(30px, -30px) rotate(120deg)' },
+              '66%': { transform: 'translate(-20px, 20px) rotate(240deg)' },
+            },
+            slideUp: {
+              'from': { opacity: '0', transform: 'translateY(24px)' },
+              'to': { opacity: '1', transform: 'translateY(0)' },
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    @media (prefers-color-scheme: dark) {
+      :root { color-scheme: dark; }
+    }
+    .glass {
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    #pastePre.wrap-lines {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  </style>
+</head>
+<body class="font-sf bg-apple-gray-light dark:bg-black text-gray-900 dark:text-gray-100 min-h-screen flex items-center justify-center p-4 sm:p-6 relative overflow-x-hidden antialiased">
+
+  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
+    <div class="absolute top-[-250px] left-[-250px] w-[500px] h-[500px] rounded-full bg-apple-blue/15 blur-[80px] animate-float"></div>
+    <div class="absolute bottom-[-300px] right-[-300px] w-[600px] h-[600px] rounded-full bg-purple-500/10 blur-[80px] animate-float" style="animation-delay: -10s;"></div>
+  </div>
+
+  <main class="w-full max-w-4xl relative z-10">
+    <div class="bg-white/90 dark:bg-gray-900/90 glass border border-gray-200 dark:border-gray-800 rounded-2xl shadow-xl overflow-hidden animate-slide-up">
+
+      <header class="px-6 sm:px-8 pt-7 pb-5 text-center border-b border-gray-200 dark:border-gray-800">
+        <div class="w-12 h-12 rounded-2xl inline-flex items-center justify-center mb-3 bg-apple-blue/10 text-apple-blue">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+        </div>
+        <h1 id="pasteTitle" class="text-xl sm:text-2xl font-bold tracking-tight mb-1">Paste</h1>
+        <p id="pasteStats" class="text-apple-gray dark:text-gray-400 text-xs sm:text-sm font-mono"></p>
+      </header>
+
+      <div class="p-5 sm:p-7">
+        <!-- Toolbar -->
+        <div class="flex flex-wrap items-center justify-between gap-2.5 mb-4">
+          <div class="inline-flex flex-wrap items-center gap-2">
+            <button type="button" id="copyPasteBtn" class="h-9 px-3.5 text-xs sm:text-sm font-semibold text-white bg-apple-blue hover:bg-apple-blue-dark rounded-lg transition-all">
+              Copy Text
+            </button>
+            <button type="button" id="wrapToggleBtn" class="h-9 px-3.5 text-xs sm:text-sm font-semibold border border-apple-blue text-apple-blue bg-apple-blue/10 rounded-lg transition-all">
+              Wrap Lines
+            </button>
+          </div>
+          <div class="inline-flex flex-wrap items-center gap-2">
+            <a id="rawLink" href="?raw=1" target="_blank" rel="noopener" class="h-9 px-3.5 text-xs sm:text-sm font-semibold inline-flex items-center bg-apple-gray-light dark:bg-white/5 border border-gray-200 dark:border-gray-800 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg transition-all">
+              Raw
+            </a>
+            <a id="downloadLink" href="?download=1" class="h-9 px-3.5 text-xs sm:text-sm font-semibold inline-flex items-center bg-apple-gray-light dark:bg-white/5 border border-gray-200 dark:border-gray-800 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg transition-all">
+              Download .txt
+            </a>
+            <a href="/" class="h-9 px-3.5 text-xs sm:text-sm font-semibold inline-flex items-center bg-apple-gray-light dark:bg-white/5 border border-gray-200 dark:border-gray-800 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg transition-all">
+              + New
+            </a>
+          </div>
+        </div>
+
+        <!-- Truncation Notice -->
+        <div id="truncateBanner" class="hidden flex-wrap items-center justify-between gap-3 px-4 py-2.5 mb-3.5 rounded-xl bg-apple-blue/10 border border-apple-blue/25 text-apple-blue text-xs sm:text-sm font-medium">
+          <span id="truncateText"></span>
+          <button type="button" id="loadFullBtn" class="h-8 px-3 text-xs font-semibold bg-white dark:bg-gray-900 border border-apple-blue/30 rounded-lg hover:bg-apple-blue hover:text-white transition-all">
+            Load Full Paste
+          </button>
+        </div>
+
+        <!-- Content Box -->
+        <div class="bg-apple-gray-light dark:bg-black/60 border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden">
+          <pre id="pastePre" class="m-0 p-4 sm:p-5 max-h-[65vh] overflow-auto font-mono text-[13.5px] leading-relaxed whitespace-pre wrap-lines select-text"></pre>
+        </div>
+      </div>
+
+      <footer class="px-6 py-4 text-center border-t border-gray-200 dark:border-gray-800">
+        <a href="https://github.com/xyTom/Url-Shorten-Worker/" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium text-apple-blue hover:bg-apple-blue/5 rounded-lg transition-all group">
+          <span>View Source Code</span>
+          <span class="transition-transform duration-200 group-hover:translate-x-1">→</span>
+        </a>
+      </footer>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      function formatSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KiB';
+        return (bytes / (1024 * 1024)).toFixed(2) + ' MiB';
+      }
+
+      const data = window.__PASTE_DATA__ || null;
+      const titleEl = document.getElementById('pasteTitle');
+      const statsEl = document.getElementById('pasteStats');
+      const preEl = document.getElementById('pastePre');
+      const copyBtn = document.getElementById('copyPasteBtn');
+      const wrapBtn = document.getElementById('wrapToggleBtn');
+      const rawLink = document.getElementById('rawLink');
+      const downloadLink = document.getElementById('downloadLink');
+      const truncateBanner = document.getElementById('truncateBanner');
+      const truncateText = document.getElementById('truncateText');
+      const loadFullBtn = document.getElementById('loadFullBtn');
+
+      let isTruncated = false;
+      let canFetchRaw = true;
+      let rawUrl = window.location.pathname + '?raw=1';
+      let fullLoadedText = null;
+
+      if (data) {
+        document.title = 'Paste /' + data.key + ' - Pastebin';
+        titleEl.textContent = 'Paste /' + data.key;
+        statsEl.textContent = formatSize(data.bytes) + ' · ' + Number(data.lines).toLocaleString() + (data.lines === 1 ? ' line' : ' lines') + ' · ' + Number(data.chars).toLocaleString() + ' chars';
+        preEl.textContent = data.preview || '';
+        rawUrl = data.rawUrl || rawUrl;
+        rawLink.href = rawUrl;
+        downloadLink.href = data.downloadUrl || (window.location.pathname + '?download=1');
+        isTruncated = Boolean(data.truncated);
+        canFetchRaw = data.canFetchRaw !== false;
+
+        if (isTruncated) {
+          const previewBytes = new Blob([data.preview || '']).size;
+          truncateText.textContent = 'Showing first ' + formatSize(previewBytes) + ' preview of ' + formatSize(data.bytes) + ' paste.';
+          truncateBanner.classList.remove('hidden');
+          truncateBanner.classList.add('flex');
+          if (!canFetchRaw) {
+            loadFullBtn.classList.add('hidden');
+          }
+        }
+      } else {
+        // Fallback if opened without server-injected data
+        fetch(rawUrl).then(function (r) { return r.ok ? r.text() : ''; }).then(function (txt) {
+          preEl.textContent = txt;
+          fullLoadedText = txt;
+        }).catch(function () {});
+      }
+
+      async function getFullText() {
+        if (fullLoadedText !== null) return fullLoadedText;
+        if (!isTruncated || !canFetchRaw) return preEl.textContent;
+        const res = await fetch(rawUrl);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        fullLoadedText = await res.text();
+        return fullLoadedText;
+      }
+
+      wrapBtn.addEventListener('click', function () {
+        const wrapped = preEl.classList.toggle('wrap-lines');
+        if (wrapped) {
+          wrapBtn.classList.add('border-apple-blue', 'text-apple-blue', 'bg-apple-blue/10');
+          wrapBtn.classList.remove('border-gray-200', 'dark:border-gray-800');
+        } else {
+          wrapBtn.classList.remove('border-apple-blue', 'text-apple-blue', 'bg-apple-blue/10');
+          wrapBtn.classList.add('border-gray-200', 'dark:border-gray-800');
+        }
+      });
+
+      loadFullBtn.addEventListener('click', async function () {
+        loadFullBtn.disabled = true;
+        loadFullBtn.textContent = 'Loading...';
+        try {
+          const full = await getFullText();
+          preEl.textContent = full;
+          isTruncated = false;
+          truncateBanner.classList.add('hidden');
+          truncateBanner.classList.remove('flex');
+        } catch {
+          loadFullBtn.disabled = false;
+          loadFullBtn.textContent = 'Retry Load';
+        }
+      });
+
+      copyBtn.addEventListener('click', async function () {
+        const orig = copyBtn.textContent;
+        try {
+          const textToCopy = await getFullText();
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(textToCopy);
+          } else {
+            const ta = document.createElement('textarea');
+            ta.value = textToCopy;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+          }
+          copyBtn.textContent = '✓ Copied';
+          copyBtn.classList.remove('bg-apple-blue', 'hover:bg-apple-blue-dark');
+          copyBtn.classList.add('bg-apple-green');
+          setTimeout(function () {
+            copyBtn.textContent = orig;
+            copyBtn.classList.remove('bg-apple-green');
+            copyBtn.classList.add('bg-apple-blue', 'hover:bg-apple-blue-dark');
+          }, 1800);
+        } catch {
+          copyBtn.textContent = 'Copy Failed';
+          setTimeout(function () { copyBtn.textContent = orig; }, 1800);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

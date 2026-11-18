@@ -3,10 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="Fast, Secure, and Reliable URL Shortening Service">
+  <meta name="description" content="Fast, Secure URL Shortener & Pastebin Service">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://captcha.gurl.eu.org/cap.min.js"></script>
-  <title>URL Shortener - Fast & Secure</title>
+  <title>URL Shortener & Pastebin</title>
   <script>
     tailwind.config = {
       theme: {
@@ -16,18 +15,20 @@
             'apple-blue-dark': '#0051D5',
             'apple-green': '#34C759',
             'apple-red': '#FF3B30',
+            'apple-amber': '#FF9500',
             'apple-gray': '#86868b',
             'apple-gray-light': '#f5f5f7',
           },
           fontFamily: {
             'sf': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'sans-serif'],
+            'mono': ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
           },
           animation: {
             'float': 'float 20s ease-in-out infinite',
             'slide-up': 'slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-            'fade-in': 'fadeIn 0.3s ease',
-            'shake': 'shake 0.5s ease',
-            'scale-up': 'scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+            'fade-in': 'fadeIn 0.25s ease',
+            'shake': 'shake 0.45s ease',
+            'scale-up': 'scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
           },
           keyframes: {
             float: {
@@ -36,20 +37,20 @@
               '66%': { transform: 'translate(-20px, 20px) rotate(240deg)' },
             },
             slideUp: {
-              'from': { opacity: '0', transform: 'translateY(40px)' },
+              'from': { opacity: '0', transform: 'translateY(32px)' },
               'to': { opacity: '1', transform: 'translateY(0)' },
             },
             fadeIn: {
-              'from': { opacity: '0', transform: 'translateY(-10px)' },
+              'from': { opacity: '0', transform: 'translateY(-6px)' },
               'to': { opacity: '1', transform: 'translateY(0)' },
             },
             shake: {
               '0%, 100%': { transform: 'translateX(0)' },
-              '25%': { transform: 'translateX(-8px)' },
-              '75%': { transform: 'translateX(8px)' },
+              '25%': { transform: 'translateX(-6px)' },
+              '75%': { transform: 'translateX(6px)' },
             },
             scaleUp: {
-              'from': { opacity: '0', transform: 'scale(0.9)' },
+              'from': { opacity: '0', transform: 'scale(0.94)' },
               'to': { opacity: '1', transform: 'scale(1)' },
             },
           },
@@ -59,106 +60,134 @@
   </script>
   <style>
     @media (prefers-color-scheme: dark) {
-      :root {
-        color-scheme: dark;
-      }
+      :root { color-scheme: dark; }
     }
-    
     .glass {
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
     }
-    
     .animate-spin-custom {
       animation: spin 0.6s linear infinite;
     }
-    
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
-    
-    /* 移动端输入框和按钮优化 */
     @media (max-width: 640px) {
-      #submitBtn {
-        min-height: 48px;
-      }
-      
-      #urlInput {
-        min-height: 48px;
-        font-size: 16px; /* 防止 iOS 自动缩放 */
-      }
-      
-      /* 确保按钮文字不换行 */
-      #submitBtn span {
-        white-space: nowrap;
-      }
-      
-      /* CAPTCHA widget 缩放 */
-      cap-widget {
-        transform: scale(0.9);
-        transform-origin: center center;
-      }
+      #submitBtn, #urlInput { min-height: 48px; font-size: 16px; }
+      cap-widget { transform: scale(0.9); transform-origin: center center; }
     }
-    
     @media (max-width: 420px) {
-      cap-widget {
-        transform: scale(0.85);
-      }
+      cap-widget { transform: scale(0.84); }
     }
   </style>
 </head>
 <body class="font-sf bg-apple-gray-light dark:bg-black text-gray-900 dark:text-gray-100 min-h-screen flex items-center justify-center p-5 relative overflow-x-hidden antialiased">
-  
+
   <!-- Animated Background Orbs -->
-  <div class="fixed top-[-250px] left-[-250px] w-[500px] h-[500px] rounded-full bg-apple-blue/15 blur-[80px] animate-float pointer-events-none"></div>
-  <div class="fixed bottom-[-300px] right-[-300px] w-[600px] h-[600px] rounded-full bg-purple-500/10 blur-[80px] animate-float pointer-events-none" style="animation-delay: -10s;"></div>
+  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
+    <div class="absolute top-[-250px] left-[-250px] w-[500px] h-[500px] rounded-full bg-apple-blue/15 blur-[80px] animate-float"></div>
+    <div class="absolute bottom-[-300px] right-[-300px] w-[600px] h-[600px] rounded-full bg-purple-500/10 blur-[80px] animate-float" style="animation-delay: -10s;"></div>
+  </div>
 
   <!-- Main Container -->
   <div class="w-full max-w-2xl relative z-10">
-    <!-- Card -->
-    <div class="bg-white dark:bg-gray-900 glass rounded-2xl shadow-xl overflow-hidden animate-slide-up">
-      
+    <div class="bg-white/90 dark:bg-gray-900/90 glass border border-gray-200 dark:border-gray-800 rounded-2xl shadow-xl overflow-hidden animate-slide-up">
+
       <!-- Header -->
-      <header class="px-6 sm:px-8 py-8 sm:py-10 text-center border-b border-gray-200 dark:border-gray-800">
-        <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-2">Shorten your URLs</h1>
-        <p class="text-apple-gray dark:text-gray-400 text-xs sm:text-sm md:text-base">Fast, Secure, and Reliable URL Shortening Service</p>
+      <header class="px-6 sm:px-8 py-8 text-center border-b border-gray-200 dark:border-gray-800">
+        <h1 id="pageHeading" class="text-2xl sm:text-3xl font-bold tracking-tight mb-2">Shorten URLs &amp; Share Text</h1>
+        <p id="pageSubtitle" class="text-apple-gray dark:text-gray-400 text-xs sm:text-sm">Fast, secure URL shortener and instant Pastebin powered by Cloudflare Workers</p>
       </header>
 
       <!-- Body -->
       <div class="p-6 sm:p-8">
-        <form id="shortenForm" onsubmit="handleSubmit(event)">
-          <div class="mb-6">
-            <label for="urlInput" class="block text-xs font-semibold text-apple-gray dark:text-gray-400 uppercase tracking-wider mb-3">
-              Enter URL to shorten
+        <!-- Mode Segmented Control -->
+        <div id="modeTabs" class="grid grid-cols-2 gap-1 p-1 mb-6 bg-apple-gray-light dark:bg-white/5 border border-gray-200 dark:border-gray-800 rounded-xl" role="tablist">
+          <button type="button" id="tabUrl" role="tab" aria-selected="true" class="flex items-center justify-center gap-2 h-10 rounded-lg text-sm font-semibold transition-all bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span>Shorten URL</span>
+          </button>
+          <button type="button" id="tabPaste" role="tab" aria-selected="false" class="flex items-center justify-center gap-2 h-10 rounded-lg text-sm font-semibold transition-all text-apple-gray dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <span>Pastebin</span>
+          </button>
+        </div>
+
+        <form id="shortenForm" novalidate>
+          <!-- URL Panel -->
+          <div id="panelUrl" class="mb-5">
+            <label for="urlInput" class="block text-xs font-semibold text-apple-gray dark:text-gray-400 uppercase tracking-wider mb-2.5">
+              Destination URL
             </label>
-            <div class="flex flex-col gap-3">
-              <input 
-                type="text" 
-                id="urlInput" 
-                class="w-full h-12 sm:h-12 px-4 text-base bg-apple-gray-light dark:bg-black border-2 border-gray-300 dark:border-gray-700 rounded-lg transition-all duration-200 outline-none focus:border-apple-blue focus:ring-4 focus:ring-apple-blue/10 placeholder-gray-400 dark:placeholder-gray-600"
-                placeholder="https://example.com/"
+            <input
+              type="url"
+              id="urlInput"
+              class="w-full h-12 px-4 text-base bg-apple-gray-light dark:bg-black/60 border-2 border-gray-300 dark:border-gray-700 rounded-xl transition-all duration-200 outline-none focus:border-apple-blue focus:ring-4 focus:ring-apple-blue/10 placeholder-gray-400 dark:placeholder-gray-600"
+              placeholder="https://example.com/"
+              autocomplete="off"
+              spellcheck="false"
+            >
+          </div>
+
+          <!-- Pastebin Panel -->
+          <div id="panelPaste" class="mb-5 hidden">
+            <div class="flex items-center justify-between gap-2 mb-2.5">
+              <label for="pasteInput" class="block text-xs font-semibold text-apple-gray dark:text-gray-400 uppercase tracking-wider">
+                Paste Content
+              </label>
+              <div class="flex items-center gap-2.5">
+                <input type="file" id="filePicker" class="hidden" accept="text/*,.txt,.md,.json,.js,.ts,.py,.sh,.yaml,.yml,.toml,.xml,.csv,.log,.sql,.html,.css,.conf,.ini">
+                <button type="button" id="loadFileBtn" class="px-2.5 py-1 text-xs font-semibold text-apple-blue border border-gray-300 dark:border-gray-700 rounded-md hover:bg-apple-blue/10 transition-colors">
+                  Load File
+                </button>
+                <span id="byteCounter" class="text-xs font-mono text-apple-gray dark:text-gray-400">0 B / 10.00 MiB</span>
+              </div>
+            </div>
+            <textarea
+              id="pasteInput"
+              rows="8"
+              class="w-full min-h-[196px] max-h-[55vh] p-3.5 text-sm font-mono leading-relaxed bg-apple-gray-light dark:bg-black/60 border-2 border-gray-300 dark:border-gray-700 rounded-xl transition-all duration-200 outline-none focus:border-apple-blue focus:ring-4 focus:ring-apple-blue/10 placeholder-gray-400 dark:placeholder-gray-600 resize-y"
+              placeholder="Paste plain text, code snippets, logs, or notes here..."
+              spellcheck="false"
+            ></textarea>
+          </div>
+
+          <!-- Optional Custom Key -->
+          <div id="customKeyGroup" class="mb-5 hidden">
+            <label for="customKeyInput" class="block text-xs font-semibold text-apple-gray dark:text-gray-400 uppercase tracking-wider mb-2.5">
+              Custom Short Key (Optional)
+            </label>
+            <div class="flex items-center bg-apple-gray-light dark:bg-black/60 border-2 border-gray-300 dark:border-gray-700 rounded-xl overflow-hidden focus-within:border-apple-blue focus-within:ring-4 focus-within:ring-apple-blue/10 transition-all">
+              <span class="px-3.5 h-11 inline-flex items-center text-sm font-mono text-apple-gray border-r border-gray-200 dark:border-gray-800 select-none">/</span>
+              <input
+                type="text"
+                id="customKeyInput"
+                maxlength="64"
+                placeholder="my-custom-key"
                 autocomplete="off"
                 spellcheck="false"
-                aria-describedby="notice"
+                class="flex-1 h-11 px-3.5 text-sm font-mono bg-transparent outline-none placeholder-gray-400 dark:placeholder-gray-600"
               >
-              <button 
-                type="submit" 
-                id="submitBtn"
-                class="w-full sm:w-auto sm:min-w-[120px] h-12 px-6 font-semibold text-white bg-apple-blue hover:bg-apple-blue-dark rounded-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none whitespace-nowrap relative overflow-hidden"
-              >
-                Shorten
-              </button>
             </div>
           </div>
+
+          <button
+            type="submit"
+            id="submitBtn"
+            class="w-full h-12 px-6 font-semibold text-white bg-apple-blue hover:bg-apple-blue-dark rounded-xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none flex items-center justify-center gap-2"
+          >
+            Shorten URL
+          </button>
+
           <div id="notice" role="alert" aria-live="polite"></div>
         </form>
       </div>
 
       <!-- Footer -->
-      <footer class="px-6 sm:px-8 py-5 sm:py-6 text-center border-t border-gray-200 dark:border-gray-800">
-        <a 
-          href="https://github.com/xyTom/Url-Shorten-Worker/" 
-          target="_blank" 
+      <footer class="px-6 sm:px-8 py-5 text-center border-t border-gray-200 dark:border-gray-800">
+        <a
+          href="https://github.com/xyTom/Url-Shorten-Worker/"
+          target="_blank"
           rel="noopener"
           class="inline-flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium text-apple-blue hover:bg-apple-blue/5 rounded-lg transition-all duration-200 group"
         >
@@ -171,347 +200,488 @@
 
   <!-- CAPTCHA Modal -->
   <div id="captchaModal" class="hidden fixed inset-0 z-50 items-center justify-center p-4 sm:p-5">
-    <div class="absolute inset-0 bg-black/50 glass animate-fade-in" onclick="closeModal('captchaModal')"></div>
-    <div class="relative w-full max-w-md bg-white dark:bg-gray-900 rounded-2xl shadow-2xl animate-scale-up">
-      <div class="flex items-center justify-between px-5 sm:px-6 py-4 sm:py-5 border-b border-gray-200 dark:border-gray-800">
-        <h2 class="text-base sm:text-lg font-semibold">CAPTCHA Verification</h2>
-        <button 
-          type="button" 
-          onclick="closeModal('captchaModal')" 
-          class="w-8 h-8 flex items-center justify-center text-2xl text-apple-gray hover:bg-apple-gray-light dark:hover:bg-gray-800 rounded-full transition-all duration-200"
+    <div id="captchaBackdrop" class="absolute inset-0 bg-black/50 glass animate-fade-in"></div>
+    <div class="relative w-full max-w-md bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl animate-scale-up">
+      <div class="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+        <h2 class="text-base sm:text-lg font-semibold">Security Verification</h2>
+        <button
+          type="button"
+          id="closeCaptchaBtn"
+          class="w-8 h-8 flex items-center justify-center text-2xl text-apple-gray hover:bg-apple-gray-light dark:hover:bg-gray-800 rounded-full transition-all"
           aria-label="Close"
-        >
-          ×
-        </button>
+        >×</button>
       </div>
       <div class="p-5 sm:p-6">
-        <p class="text-xs sm:text-sm text-apple-gray dark:text-gray-400 text-center mb-5">
-          Please complete the CAPTCHA to continue
+        <p class="text-xs sm:text-sm text-apple-gray dark:text-gray-400 text-center mb-4">
+          Please complete the CAPTCHA below to continue
         </p>
-        <div class="flex justify-center">
-          <cap-widget 
-            id="capWidget" 
-            data-cap-api-endpoint="https://captcha.gurl.eu.org/api/">
-          </cap-widget>
-        </div>
+        <div id="capStage" class="flex justify-center p-4 bg-apple-gray-light dark:bg-white/5 border border-gray-200 dark:border-gray-800 rounded-xl min-h-[88px] items-center"></div>
       </div>
     </div>
   </div>
 
   <!-- Result Modal -->
   <div id="resultModal" class="hidden fixed inset-0 z-50 items-center justify-center p-4 sm:p-5">
-    <div class="absolute inset-0 bg-black/50 glass animate-fade-in" onclick="closeModal('resultModal')"></div>
-    <div class="relative w-full max-w-md bg-white dark:bg-gray-900 rounded-2xl shadow-2xl animate-scale-up">
-      <div class="flex items-center justify-between px-5 sm:px-6 py-4 sm:py-5 border-b border-gray-200 dark:border-gray-800">
-        <h2 class="text-base sm:text-lg font-semibold">Short URL Generated</h2>
-        <button 
-          type="button" 
-          onclick="closeModal('resultModal')" 
-          class="w-8 h-8 flex items-center justify-center text-2xl text-apple-gray hover:bg-apple-gray-light dark:hover:bg-gray-800 rounded-full transition-all duration-200"
+    <div id="resultBackdrop" class="absolute inset-0 bg-black/50 glass animate-fade-in"></div>
+    <div class="relative w-full max-w-md bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl animate-scale-up">
+      <div class="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+        <h2 id="resultTitle" class="text-base sm:text-lg font-semibold">Short URL Generated</h2>
+        <button
+          type="button"
+          id="closeResultBtn"
+          class="w-8 h-8 flex items-center justify-center text-2xl text-apple-gray hover:bg-apple-gray-light dark:hover:bg-gray-800 rounded-full transition-all"
           aria-label="Close"
-        >
-          ×
-        </button>
+        >×</button>
       </div>
       <div class="p-5 sm:p-6">
-        <div id="resultUrl" class="text-center break-all text-apple-blue font-semibold text-sm sm:text-base"></div>
+        <div id="resultUrl" class="p-3.5 bg-apple-gray-light dark:bg-white/5 border border-gray-200 dark:border-gray-800 rounded-xl text-center break-all text-apple-blue font-semibold text-sm sm:text-base"></div>
       </div>
-      <div class="flex flex-col gap-3 px-5 sm:px-6 py-4 sm:py-5 border-t border-gray-200 dark:border-gray-800">
-        <button 
-          type="button" 
-          onclick="copyToClipboard()"
-          class="w-full h-12 px-6 font-semibold text-white bg-apple-blue hover:bg-apple-blue-dark rounded-lg transition-all duration-200 active:scale-[0.98]"
-        >
-          Copy Link
-        </button>
-        <button 
-          type="button" 
-          onclick="closeModal('resultModal')"
-          class="w-full h-12 px-6 font-semibold text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 rounded-lg transition-all duration-200 active:scale-[0.98]"
-        >
-          Close
-        </button>
+      <div class="flex flex-col gap-2.5 px-5 sm:px-6 py-4 border-t border-gray-200 dark:border-gray-800">
+        <button
+          type="button"
+          id="copyBtn"
+          class="w-full h-11 px-6 font-semibold text-white bg-apple-blue hover:bg-apple-blue-dark rounded-xl transition-all active:scale-[0.98]"
+        >Copy Link</button>
+        <div class="flex gap-2.5">
+          <a
+            id="openLinkBtn"
+            href="#"
+            target="_blank"
+            rel="noopener"
+            class="flex-1 h-11 px-4 font-semibold text-sm flex items-center justify-center text-gray-700 dark:text-gray-200 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 rounded-xl transition-all"
+          >Open Link ↗</a>
+          <button
+            type="button"
+            id="copyRawBtn"
+            class="hidden flex-1 h-11 px-4 font-semibold text-sm text-gray-700 dark:text-gray-200 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 rounded-xl transition-all"
+          >Copy Raw URL</button>
+        </div>
       </div>
     </div>
   </div>
 
   <script>
-    // State Management
-    const state = {
-      captchaToken: null,
-      isProcessing: false,
-      pendingUrl: null,
-      generatedUrl: null
-    };
+    (function () {
+      const cfg = window.__WORKER_CONFIG__ || {};
+      const PASTE_ENABLED = cfg.paste_enabled !== false;
+      const MAX_PASTE_BYTES = Number(cfg.paste_max_bytes) || (10 * 1024 * 1024);
+      const CUSTOM_LINK_ENABLED = Boolean(cfg.custom_link);
+      const CAPTCHA_REQUIRED = cfg.captcha_required !== undefined ? Boolean(cfg.captcha_required) : true;
+      const CAPTCHA_ENDPOINT = (cfg.captcha_api_endpoint || 'https://captcha.gurl.eu.org/api/').replace(/\/?$/, '/');
 
-    // Elements
-    const elements = {
-      form: document.getElementById('shortenForm'),
-      input: document.getElementById('urlInput'),
-      submitBtn: document.getElementById('submitBtn'),
-      notice: document.getElementById('notice'),
-      captchaModal: document.getElementById('captchaModal'),
-      resultModal: document.getElementById('resultModal'),
-      resultUrl: document.getElementById('resultUrl'),
-      capWidget: document.getElementById('capWidget')
-    };
+      const state = {
+        mode: 'url',
+        captchaToken: null,
+        isProcessing: false,
+        pendingSubmit: false,
+        generatedUrl: '',
+        generatedRawUrl: '',
+        sdkLoadFailed: false,
+      };
 
-    // Initialize
-    document.addEventListener('DOMContentLoaded', () => {
-      // Setup CAPTCHA listeners
-      if (elements.capWidget) {
-        // CAPTCHA solved successfully
-        elements.capWidget.addEventListener('solve', (e) => {
-          state.captchaToken = e.detail.token;
-          console.log('✅ CAPTCHA verified');
-          closeModal('captchaModal');
-          
-          if (state.pendingUrl) {
-            performShortening(state.pendingUrl);
-            state.pendingUrl = null;
+      const el = {
+        pageHeading: document.getElementById('pageHeading'),
+        pageSubtitle: document.getElementById('pageSubtitle'),
+        modeTabs: document.getElementById('modeTabs'),
+        tabUrl: document.getElementById('tabUrl'),
+        tabPaste: document.getElementById('tabPaste'),
+        panelUrl: document.getElementById('panelUrl'),
+        panelPaste: document.getElementById('panelPaste'),
+        form: document.getElementById('shortenForm'),
+        urlInput: document.getElementById('urlInput'),
+        pasteInput: document.getElementById('pasteInput'),
+        filePicker: document.getElementById('filePicker'),
+        loadFileBtn: document.getElementById('loadFileBtn'),
+        byteCounter: document.getElementById('byteCounter'),
+        customKeyGroup: document.getElementById('customKeyGroup'),
+        customKeyInput: document.getElementById('customKeyInput'),
+        submitBtn: document.getElementById('submitBtn'),
+        notice: document.getElementById('notice'),
+        captchaModal: document.getElementById('captchaModal'),
+        captchaBackdrop: document.getElementById('captchaBackdrop'),
+        closeCaptchaBtn: document.getElementById('closeCaptchaBtn'),
+        capStage: document.getElementById('capStage'),
+        resultModal: document.getElementById('resultModal'),
+        resultBackdrop: document.getElementById('resultBackdrop'),
+        resultTitle: document.getElementById('resultTitle'),
+        closeResultBtn: document.getElementById('closeResultBtn'),
+        resultUrl: document.getElementById('resultUrl'),
+        copyBtn: document.getElementById('copyBtn'),
+        openLinkBtn: document.getElementById('openLinkBtn'),
+        copyRawBtn: document.getElementById('copyRawBtn'),
+        capWidget: null,
+      };
+
+      function formatSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KiB';
+        return (bytes / (1024 * 1024)).toFixed(2) + ' MiB';
+      }
+
+      const MAX_PASTE_LABEL = formatSize(MAX_PASTE_BYTES);
+
+      // Apply server configuration to UI
+      if (!PASTE_ENABLED) {
+        el.modeTabs.classList.add('hidden');
+        el.pageHeading.textContent = 'Shorten your URLs';
+        el.pageSubtitle.textContent = 'Fast, Secure, and Reliable URL Shortening Service';
+      }
+      if (CUSTOM_LINK_ENABLED) {
+        el.customKeyGroup.classList.remove('hidden');
+      }
+      el.byteCounter.textContent = '0 B / ' + MAX_PASTE_LABEL;
+
+      // Dynamically initialize CAPTCHA widget when required
+      if (CAPTCHA_REQUIRED) {
+        try {
+          const epOrigin = new URL(CAPTCHA_ENDPOINT).origin;
+          const script = document.createElement('script');
+          script.src = epOrigin + '/cap.min.js';
+          script.defer = true;
+          script.onerror = function () { state.sdkLoadFailed = true; };
+          document.head.appendChild(script);
+        } catch (e) {
+          state.sdkLoadFailed = true;
+        }
+
+        const widget = document.createElement('cap-widget');
+        widget.id = 'capWidget';
+        widget.setAttribute('data-cap-api-endpoint', CAPTCHA_ENDPOINT);
+        el.capStage.appendChild(widget);
+        el.capWidget = widget;
+
+        widget.addEventListener('solve', function (e) {
+          state.captchaToken = e && e.detail ? e.detail.token : null;
+          closeModal(el.captchaModal);
+          if (state.pendingSubmit && state.captchaToken) {
+            state.pendingSubmit = false;
+            submitCreation();
           }
         });
 
-        // CAPTCHA error
-        elements.capWidget.addEventListener('error', (e) => {
-          console.error('❌ CAPTCHA error:', e.detail);
+        widget.addEventListener('error', function () {
           showNotice('CAPTCHA verification failed. Please try again.', 'error');
         });
-
-        // CAPTCHA reset
-        elements.capWidget.addEventListener('reset', () => {
-          console.log('🔄 CAPTCHA reset');
-          state.captchaToken = null;
-        });
-
-        // CAPTCHA progress (optional: for debugging)
-        elements.capWidget.addEventListener('progress', (e) => {
-          console.log('⏳ CAPTCHA progress:', e.detail);
-        });
       }
 
-      // Input validation
-      elements.input.addEventListener('input', () => {
-        const value = elements.input.value.trim();
-        if (value && !isValidUrl(value)) {
-          elements.input.classList.add('border-apple-red');
-          elements.input.classList.remove('border-gray-300', 'dark:border-gray-700');
-        } else {
-          elements.input.classList.remove('border-apple-red');
-          elements.input.classList.add('border-gray-300', 'dark:border-gray-700');
-        }
-      });
-
-      // Keyboard shortcuts
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          closeModal('captchaModal');
-          closeModal('resultModal');
-        }
-      });
-    });
-
-    // URL Validation
-    function isValidUrl(string) {
-      try {
-        const url = new URL(string);
-        return url.protocol === 'http:' || url.protocol === 'https:';
-      } catch {
-        return false;
-      }
-    }
-
-    // Form Submit Handler
-    function handleSubmit(event) {
-      event.preventDefault();
-      
-      if (state.isProcessing) return;
-
-      const url = elements.input.value.trim();
-
-      if (!url) {
-        showNotice('Please enter a URL', 'error');
-        elements.input.focus();
-        return;
-      }
-
-      if (!isValidUrl(url)) {
-        showNotice('Please enter a valid URL (must include http:// or https://)', 'error');
-        elements.input.classList.add('border-apple-red');
-        elements.input.focus();
-        return;
-      }
-
-      elements.input.classList.remove('border-apple-red');
-      clearNotice();
-
-      if (!state.captchaToken) {
-        state.pendingUrl = url;
-        openModal('captchaModal');
-        return;
-      }
-
-      performShortening(url);
-    }
-
-    // Perform URL Shortening
-    async function performShortening(url) {
-      if (state.isProcessing) return;
-
-      state.isProcessing = true;
-      setLoading(true);
-
-      try {
-        const response = await fetch(window.location.origin, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            url: url,
-            captcha_token: state.captchaToken
-          })
-        });
-
-        const data = await response.json();
-
-        if (data.status === 200) {
-          state.generatedUrl = window.location.origin + data.key;
-          elements.resultUrl.textContent = state.generatedUrl;
-          elements.input.value = '';
-          
-          // Reset CAPTCHA state after successful generation
-          resetCaptcha();
-          
-          showNotice('Short URL created successfully!', 'success');
-          setTimeout(() => {
-            openModal('resultModal');
-            clearNotice();
-          }, 500);
-        } else {
-          const errorMsg = data.error || 'Unknown error occurred';
-          showNotice(errorMsg, 'error');
-          
-          // Reset CAPTCHA if verification failed
-          if (data.captcha_required || errorMsg.toLowerCase().includes('captcha')) {
-            resetCaptcha();
-          }
-        }
-      } catch (error) {
-        console.error('Request failed:', error);
-        showNotice(`Network error: ${error.message}`, 'error');
-        // Reset CAPTCHA on network error
-        resetCaptcha();
-      } finally {
-        state.isProcessing = false;
-        setLoading(false);
-      }
-    }
-
-    // Reset CAPTCHA
-    function resetCaptcha() {
-      state.captchaToken = null;
-      
-      // Trigger reset event on widget if available
-      if (elements.capWidget && typeof elements.capWidget.reset === 'function') {
+      function isValidUrl(str) {
         try {
-          elements.capWidget.reset();
-          console.log('🔄 CAPTCHA widget reset');
-        } catch (error) {
-          console.warn('Failed to reset CAPTCHA widget:', error);
+          const u = new URL(str);
+          if (u.protocol !== 'http:' && u.protocol !== 'https:') return false;
+          if (!u.hostname.includes('.') || u.hostname.startsWith('.') || u.hostname.endsWith('.')) return false;
+          return true;
+        } catch {
+          return false;
         }
       }
-    }
 
-    // Copy to Clipboard
-    async function copyToClipboard() {
-      if (!state.generatedUrl) return;
+      function showNotice(msg, type) {
+        const isSuccess = type === 'success';
+        const cls = isSuccess
+          ? 'bg-apple-green/10 border border-apple-green/25 text-apple-green animate-fade-in'
+          : 'bg-apple-red/10 border border-apple-red/25 text-apple-red animate-shake';
+        const box = document.createElement('div');
+        box.className = 'px-4 py-3 rounded-xl text-sm font-medium mt-4 text-center ' + cls;
+        box.textContent = msg;
+        el.notice.innerHTML = '';
+        el.notice.appendChild(box);
+      }
 
-      const copyBtn = document.querySelector('#resultModal button.bg-apple-blue');
-      const originalText = copyBtn.textContent;
+      function clearNotice() {
+        el.notice.innerHTML = '';
+      }
 
-      try {
-        if (navigator.clipboard) {
-          await navigator.clipboard.writeText(state.generatedUrl);
+      function setLoading(loading) {
+        el.submitBtn.disabled = loading;
+        if (loading) {
+          const text = state.mode === 'paste' ? 'Saving Paste...' : 'Generating...';
+          el.submitBtn.innerHTML = '<span class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin-custom"></span><span>' + text + '</span>';
         } else {
-          const textarea = document.createElement('textarea');
-          textarea.value = state.generatedUrl;
-          textarea.style.position = 'fixed';
-          textarea.style.opacity = '0';
-          document.body.appendChild(textarea);
-          textarea.select();
-          document.execCommand('copy');
-          document.body.removeChild(textarea);
+          el.submitBtn.textContent = state.mode === 'paste' ? 'Create Paste' : 'Shorten URL';
         }
-
-        copyBtn.textContent = '✓ Copied';
-        copyBtn.classList.remove('bg-apple-blue', 'hover:bg-apple-blue-dark');
-        copyBtn.classList.add('bg-apple-green');
-
-        setTimeout(() => {
-          copyBtn.textContent = originalText;
-          copyBtn.classList.remove('bg-apple-green');
-          copyBtn.classList.add('bg-apple-blue', 'hover:bg-apple-blue-dark');
-        }, 2000);
-      } catch (error) {
-        console.error('Copy failed:', error);
-        showNotice('Failed to copy', 'error');
       }
-    }
 
-    // Modal Management
-    function openModal(modalId) {
-      const modal = document.getElementById(modalId);
-      if (modal) {
+      function switchMode(mode) {
+        if (!PASTE_ENABLED) return;
+        state.mode = mode;
+        clearNotice();
+        const activeClasses = ['bg-white', 'dark:bg-gray-800', 'text-gray-900', 'dark:text-gray-100', 'shadow-sm'];
+        const inactiveClasses = ['text-apple-gray', 'dark:text-gray-400'];
+
+        if (mode === 'paste') {
+          el.tabUrl.classList.remove(...activeClasses);
+          el.tabUrl.classList.add(...inactiveClasses);
+          el.tabUrl.setAttribute('aria-selected', 'false');
+          el.tabPaste.classList.remove(...inactiveClasses);
+          el.tabPaste.classList.add(...activeClasses);
+          el.tabPaste.setAttribute('aria-selected', 'true');
+          el.panelUrl.classList.add('hidden');
+          el.panelPaste.classList.remove('hidden');
+          el.submitBtn.textContent = 'Create Paste';
+          el.pasteInput.focus();
+        } else {
+          el.tabPaste.classList.remove(...activeClasses);
+          el.tabPaste.classList.add(...inactiveClasses);
+          el.tabPaste.setAttribute('aria-selected', 'false');
+          el.tabUrl.classList.remove(...inactiveClasses);
+          el.tabUrl.classList.add(...activeClasses);
+          el.tabUrl.setAttribute('aria-selected', 'true');
+          el.panelPaste.classList.add('hidden');
+          el.panelUrl.classList.remove('hidden');
+          el.submitBtn.textContent = 'Shorten URL';
+          el.urlInput.focus();
+        }
+      }
+
+      function updateByteCounter() {
+        const bytes = new Blob([el.pasteInput.value]).size;
+        el.byteCounter.textContent = formatSize(bytes) + ' / ' + MAX_PASTE_LABEL;
+        el.byteCounter.classList.remove('text-apple-amber', 'text-apple-red', 'font-semibold');
+        el.pasteInput.classList.remove('border-apple-red');
+        if (bytes > MAX_PASTE_BYTES) {
+          el.byteCounter.classList.add('text-apple-red', 'font-semibold');
+          el.pasteInput.classList.add('border-apple-red');
+        } else if (bytes > MAX_PASTE_BYTES * 0.85) {
+          el.byteCounter.classList.add('text-apple-amber');
+        }
+        return bytes;
+      }
+
+      function openModal(modal) {
         modal.classList.remove('hidden');
         modal.classList.add('flex');
         document.body.style.overflow = 'hidden';
       }
-    }
 
-    function closeModal(modalId) {
-      const modal = document.getElementById(modalId);
-      if (modal) {
+      function closeModal(modal) {
         modal.classList.add('hidden');
         modal.classList.remove('flex');
         document.body.style.overflow = '';
-        
-        // Reset CAPTCHA when closing the CAPTCHA modal without completing
-        if (modalId === 'captchaModal' && !state.captchaToken) {
-          state.pendingUrl = null;
-          resetCaptcha();
+      }
+
+      function resetCaptcha() {
+        state.captchaToken = null;
+        if (el.capWidget && typeof el.capWidget.reset === 'function') {
+          try { el.capWidget.reset(); } catch {}
         }
       }
-    }
 
-    // Notice Management
-    function showNotice(message, type = 'error') {
-      const bgColor = type === 'success' 
-        ? 'bg-apple-green/10 text-apple-green' 
-        : 'bg-apple-red/10 text-apple-red';
-      const animation = type === 'error' ? 'animate-shake' : 'animate-fade-in';
-      
-      elements.notice.innerHTML = `
-        <div class="px-4 py-3 rounded-lg text-sm font-medium mt-4 ${bgColor} ${animation}">
-          ${message}
-        </div>
-      `;
-    }
-
-    function clearNotice() {
-      elements.notice.innerHTML = '';
-    }
-
-    // Loading State
-    function setLoading(loading) {
-      elements.submitBtn.disabled = loading;
-      if (loading) {
-        elements.submitBtn.innerHTML = `
-          <span>Generating...</span>
-          <span class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin-custom"></span>
-        `;
-      } else {
-        elements.submitBtn.textContent = 'Shorten';
+      async function copyText(text, btn, defaultText) {
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+          } else {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+          }
+          btn.textContent = '✓ Copied';
+          const hadBlue = btn.classList.contains('bg-apple-blue');
+          if (hadBlue) btn.classList.remove('bg-apple-blue', 'hover:bg-apple-blue-dark');
+          btn.classList.add('bg-apple-green', 'text-white');
+          setTimeout(function () {
+            btn.textContent = defaultText;
+            btn.classList.remove('bg-apple-green');
+            if (hadBlue) {
+              btn.classList.add('bg-apple-blue', 'hover:bg-apple-blue-dark');
+            } else {
+              btn.classList.remove('text-white');
+            }
+          }, 1800);
+        } catch {
+          showNotice('Failed to copy to clipboard', 'error');
+        }
       }
-    }
+
+      async function submitCreation() {
+        if (state.isProcessing) return;
+        state.isProcessing = true;
+        setLoading(true);
+        clearNotice();
+
+        const customKey = CUSTOM_LINK_ENABLED ? el.customKeyInput.value.trim() : '';
+
+        try {
+          let response;
+          if (state.mode === 'paste') {
+            const headers = { 'Content-Type': 'text/plain;charset=UTF-8' };
+            if (state.captchaToken) headers['X-Captcha-Token'] = state.captchaToken;
+            if (customKey) headers['X-Custom-Key'] = customKey;
+            response = await fetch(window.location.origin + '/', {
+              method: 'POST',
+              headers,
+              body: el.pasteInput.value,
+            });
+          } else {
+            const payload = { url: el.urlInput.value.trim() };
+            if (state.captchaToken) payload.captcha_token = state.captchaToken;
+            if (customKey) payload.key = customKey;
+            response = await fetch(window.location.origin + '/', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload),
+            });
+          }
+
+          const data = await response.json();
+          if (response.ok && data.status === 200) {
+            state.generatedUrl = window.location.origin + data.key;
+            state.generatedRawUrl = data.raw_url ? (window.location.origin + data.raw_url) : '';
+            el.resultUrl.textContent = state.generatedUrl;
+            el.openLinkBtn.href = state.generatedUrl;
+
+            if (state.mode === 'paste') {
+              el.resultTitle.textContent = 'Paste Created';
+              el.pasteInput.value = '';
+              updateByteCounter();
+              el.copyRawBtn.classList.toggle('hidden', !state.generatedRawUrl);
+            } else {
+              el.resultTitle.textContent = 'Short URL Generated';
+              el.urlInput.value = '';
+              el.copyRawBtn.classList.add('hidden');
+            }
+            if (CUSTOM_LINK_ENABLED) el.customKeyInput.value = '';
+            resetCaptcha();
+            openModal(el.resultModal);
+          } else {
+            showNotice(data.error || 'Operation failed', 'error');
+            // One-time CAPTCHA token is consumed once sent to the server
+            resetCaptcha();
+          }
+        } catch (err) {
+          showNotice('Network error: ' + err.message, 'error');
+          resetCaptcha();
+        } finally {
+          state.isProcessing = false;
+          setLoading(false);
+        }
+      }
+
+      el.tabUrl.addEventListener('click', function () { switchMode('url'); });
+      el.tabPaste.addEventListener('click', function () { switchMode('paste'); });
+
+      el.urlInput.addEventListener('input', function () {
+        const v = el.urlInput.value.trim();
+        el.urlInput.classList.toggle('border-apple-red', Boolean(v && !isValidUrl(v)));
+      });
+
+      el.pasteInput.addEventListener('input', updateByteCounter);
+
+      el.loadFileBtn.addEventListener('click', function () { el.filePicker.click(); });
+      el.filePicker.addEventListener('change', function () {
+        const file = el.filePicker.files && el.filePicker.files[0];
+        if (!file) return;
+        if (file.size > MAX_PASTE_BYTES) {
+          showNotice('Selected file (' + formatSize(file.size) + ') exceeds the ' + MAX_PASTE_LABEL + ' limit.', 'error');
+          el.filePicker.value = '';
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = function () {
+          el.pasteInput.value = String(reader.result || '');
+          updateByteCounter();
+          clearNotice();
+          el.filePicker.value = '';
+        };
+        reader.onerror = function () {
+          showNotice('Failed to read selected file.', 'error');
+          el.filePicker.value = '';
+        };
+        reader.readAsText(file);
+      });
+
+      el.form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (state.isProcessing) return;
+        clearNotice();
+
+        if (state.mode === 'paste') {
+          if (!el.pasteInput.value || !/\S/.test(el.pasteInput.value)) {
+            showNotice('Please enter or load some text content.', 'error');
+            el.pasteInput.focus();
+            return;
+          }
+          const bytes = updateByteCounter();
+          if (bytes > MAX_PASTE_BYTES) {
+            showNotice('Paste size (' + formatSize(bytes) + ') exceeds the maximum limit of ' + MAX_PASTE_LABEL + '.', 'error');
+            el.pasteInput.focus();
+            return;
+          }
+        } else {
+          const urlVal = el.urlInput.value.trim();
+          if (!urlVal) {
+            showNotice('Please enter a URL to shorten.', 'error');
+            el.urlInput.focus();
+            return;
+          }
+          if (!isValidUrl(urlVal)) {
+            el.urlInput.classList.add('border-apple-red');
+            showNotice('Please enter a valid URL starting with http:// or https://', 'error');
+            el.urlInput.focus();
+            return;
+          }
+          try {
+            if (new URL(urlVal).hostname.toLowerCase() === window.location.hostname.toLowerCase()) {
+              el.urlInput.classList.add('border-apple-red');
+              showNotice('Cannot shorten URLs pointing to the current domain.', 'error');
+              el.urlInput.focus();
+              return;
+            }
+          } catch {}
+        }
+
+        if (CUSTOM_LINK_ENABLED && el.customKeyInput.value.trim()) {
+          const k = el.customKeyInput.value.trim();
+          if (!/^[A-Za-z0-9_-]{1,64}$/.test(k) || k.toLowerCase() === 'raw') {
+            showNotice("Custom key can only use 1-64 letters, numbers, '-' or '_' (excluding reserved 'raw').", 'error');
+            el.customKeyInput.focus();
+            return;
+          }
+        }
+
+        if (CAPTCHA_REQUIRED && !state.captchaToken) {
+          if (state.sdkLoadFailed) {
+            showNotice('Failed to load CAPTCHA widget. Please check your connection or reload the page.', 'error');
+            return;
+          }
+          state.pendingSubmit = true;
+          openModal(el.captchaModal);
+          return;
+        }
+
+        submitCreation();
+      });
+
+      function dismissCaptchaModal() {
+        state.pendingSubmit = false;
+        closeModal(el.captchaModal);
+        resetCaptcha();
+      }
+
+      el.closeCaptchaBtn.addEventListener('click', dismissCaptchaModal);
+      el.captchaBackdrop.addEventListener('click', dismissCaptchaModal);
+      el.closeResultBtn.addEventListener('click', function () { closeModal(el.resultModal); });
+      el.resultBackdrop.addEventListener('click', function () { closeModal(el.resultModal); });
+
+      el.copyBtn.addEventListener('click', function () {
+        if (state.generatedUrl) copyText(state.generatedUrl, el.copyBtn, 'Copy Link');
+      });
+      el.copyRawBtn.addEventListener('click', function () {
+        if (state.generatedRawUrl) copyText(state.generatedRawUrl, el.copyRawBtn, 'Copy Raw URL');
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          dismissCaptchaModal();
+          closeModal(el.resultModal);
+        }
+      });
+    })();
   </script>
 </body>
 </html>
