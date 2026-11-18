@@ -227,7 +227,7 @@ When `fallback_on_error: true`:
 - Ensure core business is not affected
 
 ### 4. Error Classification Handling
-- **Client errors (400, 401)**: No retry, return error immediately
+- **Client errors (400, 401, 403, 404, 409, 410)**: No retry, return error immediately
 - **Server errors (500, 502, 503)**: Retry then degrade
 - **Network errors**: Retry then degrade
 
