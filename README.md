@@ -4,7 +4,7 @@ A URL Shortener created using Cloudflare Worker
 ## ✨ New Features
 
 📄 **Pastebin (Text Sharing)** - Share plain text, code snippets, and logs alongside short URLs
-- Built-in dual-mode homepage (`Shorten URL` + `Pastebin`) with dark/light mode and file upload
+- Dual-mode homepage (`Shorten URL` + `Pastebin` under `theme/captcha`) with dark/light mode and file upload
 - Styled reader page with one-click copy, line wrap toggle, `.txt` download, and `?raw=1` / `/raw/:key` plain-text output
 - UTF-8 byte-size validation up to `10 MiB` by default (configurable in `config.paste.max_bytes`, hard-capped below Cloudflare KV's `25 MiB` value limit)
 
