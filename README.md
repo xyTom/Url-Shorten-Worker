@@ -3,6 +3,11 @@ A URL Shortener created using Cloudflare Worker
 
 ## ✨ New Features
 
+📄 **Pastebin (Text Sharing)** - Share plain text, code snippets, and logs alongside short URLs
+- Dual-mode homepage (`Shorten URL` + `Pastebin` under `theme/captcha`) with dark/light mode and file upload
+- Styled reader page with one-click copy, line wrap toggle, `.txt` download, and `?raw=1` / `/raw/:key` plain-text output
+- UTF-8 byte-size validation up to `10 MiB` by default (configurable in `config.paste.max_bytes`, hard-capped below Cloudflare KV's `25 MiB` value limit)
+
 🔒 **CAPTCHA Protection** - Integrated with [CAP Worker](https://captcha.gurl.eu.org) for bot prevention and abuse protection
 - Configurable CAPTCHA on link creation and access
 - Service degradation strategy for high availability
@@ -65,7 +70,13 @@ For detailed CAPTCHA configuration, see:
 - [English Documentation](docs/CAPTCHA.md)
 - [中文文档](docs/CAPTCHA_zh-hans.md)
 
-### 6. 保存并部署 / Save and Deploy
+### 6. 安全密钥配置 (可选) / Configure Safe Browsing Secret (Optional)
+
+If you use Google Safe Browsing URL check, you can add a Worker Secret / Environment Variable named `SAFE_BROWSING_API_KEY` in Cloudflare Worker Settings instead of hardcoding `safe_browsing_api_key` in `index.js`.
+
+如需开启 Google Safe Browsing 恶意网址拦截，建议在 Cloudflare Worker 设置中添加名为 `SAFE_BROWSING_API_KEY` 的加密环境变量（Secret），避免将密钥明文写在 `index.js` 中。
+
+### 7. 保存并部署 / Save and Deploy
 
 Click Save and Deploy
 
