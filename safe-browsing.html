@@ -1,98 +1,96 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-  <meta http-equiv="content-type" content="txt/html; charset=utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha256-L/W5Wfqfa0sdBNIKN9cG6QA5F2qx4qICmU2VgLruv9Y=" crossorigin="anonymous">
-  <title>Warning! The URL you are visiting is risky.|Shorter URL</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="referrer" content="no-referrer">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Security Warning - Unsafe URL Detected</title>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'apple-blue': '#007AFF',
+            'apple-blue-dark': '#0051D5',
+            'apple-red': '#FF3B30',
+            'apple-gray': '#86868b',
+            'apple-gray-light': '#f5f5f7',
+          },
+          fontFamily: {
+            'sf': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'sans-serif'],
+            'mono': ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+          animation: {
+            'float': 'float 20s ease-in-out infinite',
+            'slide-up': 'slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translate(0, 0) rotate(0deg)' },
+              '33%': { transform: 'translate(30px, -30px) rotate(120deg)' },
+              '66%': { transform: 'translate(-20px, 20px) rotate(240deg)' },
+            },
+            slideUp: {
+              'from': { opacity: '0', transform: 'translateY(28px)' },
+              'to': { opacity: '1', transform: 'translateY(0)' },
+            },
+          },
+        },
+      },
+    }
+  </script>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      cursor: default;
+    @media (prefers-color-scheme: dark) {
+      :root { color-scheme: dark; }
     }
-    html, body {
-      height: 100%;
-
+    .glass {
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
-    body {
-      display: -webkit-box;
-      display: flex;
-      -webkit-box-align: center;
-      align-items: center;
-      -webkit-box-pack: center;
-      justify-content: center;
-      vertical-align: center;
-      flex-wrap: wrap;
-      align-content: center;
-      background: red;
-      color: white;
-      overflow: hidden;
-    }
-    .card {
-      background-color: transparent;
-      width: 768px;
-    }
-    .card-text {
-      text-align: center;
-    }
-    .card-text > a {
-      text-decoration: none;
-      color: #f1f908;
-    }
-    .card-text > a {
-      cursor: pointer;
-    }
-    .form-control {
-        cursor: auto;
-    }
-    @media (max-width: 769px) {
-      .card {
-        width: 80%;
-      }
-    }
-    @media (max-width: 420px) {
-      .card {
-        width: 95%;
-      }
-    } 
   </style>
 </head>
-<body>
-  <div class="card">
-    <h5 class="card-header">Warning!</h5>
-    <div class="card-body">
-      <h5 class="card-title">The following url you are about to visit is not safe.</h5>
-      <div class="input-group mb-3">
-        <input type="text" class="form-control" value="{Replace}" id="text" disabled>
-        For your protection, we will not automatically redirect to this url. We recommend that you close this page and stop visiting that url, if you still need to visit, please manually copy the url link address into the address bar of your browser to open. Thank you.
-      </div>    
-      <div class="card-text">
-        Powered By: <a href="https://github.com/xyTom/Url-Shorten-Worker/" target="_self">Url Shorten Worker</a>
-      </div>
-      <p id="notice"></p>             
-    </div>
+<body class="font-sf bg-apple-gray-light dark:bg-black text-gray-900 dark:text-gray-100 min-h-screen flex items-center justify-center p-5 relative overflow-x-hidden antialiased">
+
+  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
+    <div class="absolute top-[-250px] left-[-250px] w-[500px] h-[500px] rounded-full bg-apple-red/15 blur-[80px] animate-float"></div>
+    <div class="absolute bottom-[-300px] right-[-300px] w-[600px] h-[600px] rounded-full bg-purple-500/10 blur-[80px] animate-float" style="animation-delay: -10s;"></div>
   </div>
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Result</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+
+  <main class="w-full max-w-lg relative z-10">
+    <div class="bg-white/90 dark:bg-gray-900/90 glass border border-gray-200 dark:border-gray-800 rounded-2xl shadow-xl overflow-hidden animate-slide-up">
+
+      <header class="px-6 sm:px-8 pt-8 pb-6 text-center border-b border-gray-200 dark:border-gray-800">
+        <div class="w-[52px] h-[52px] rounded-2xl inline-flex items-center justify-center mb-4 bg-apple-red/10 text-apple-red">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         </div>
-        <div class="modal-body" id="result">No result</div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" onclick='copyurl("result")' data-toggle="popover" data-placement="bottom" data-content="Copied!">Copy</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>    
-        </div>
+        <h1 class="text-2xl font-bold tracking-tight mb-1.5">Warning: Unsafe URL Detected</h1>
+        <p class="text-apple-gray dark:text-gray-400 text-xs sm:text-sm">The link you are about to visit has been flagged as potentially harmful.</p>
+      </header>
+
+      <div class="p-6 sm:p-7">
+        <input
+          type="text"
+          value="{Replace}"
+          readonly
+          aria-label="Flagged URL"
+          class="w-full h-11 px-3.5 mb-4 text-xs sm:text-sm font-mono bg-apple-gray-light dark:bg-black/60 border border-gray-200 dark:border-gray-800 rounded-xl outline-none text-gray-800 dark:text-gray-200"
+        >
+        <p class="text-xs sm:text-sm text-apple-gray dark:text-gray-400 leading-relaxed text-center mb-5">
+          For your protection, automatic redirection has been blocked. We strongly recommend closing this page. If you understand the risks and still need to proceed, manually copy the address above into your browser.
+        </p>
+        <a href="/" class="w-full h-11 px-6 font-semibold text-sm flex items-center justify-center text-white bg-apple-blue hover:bg-apple-blue-dark rounded-xl transition-all hover:-translate-y-0.5 hover:shadow-lg">
+          Return to Safety
+        </a>
       </div>
+
+      <footer class="px-6 py-4 text-center border-t border-gray-200 dark:border-gray-800">
+        <a href="https://github.com/xyTom/Url-Shorten-Worker/" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium text-apple-blue hover:bg-apple-blue/5 rounded-lg transition-all group">
+          <span>Powered by Url-Shorten-Worker</span>
+          <span class="transition-transform duration-200 group-hover:translate-x-1">→</span>
+        </a>
+      </footer>
     </div>
-  </div>         
-  <script src="https://gcore.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
-  <script src="https://gcore.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-  <script src="https://gcore.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha256-WqU1JavFxSAMcLP2WIOI+GB2zWmShMI82mTpLDcqFUg=" crossorigin="anonymous"></script>
-  <script src="https://gcore.jsdelivr.net/npm/url-shorten-worker@1.0.5/main.js" crossorigin="anonymous"></script>
+  </main>
 </body>
 </html>
